@@ -1,17 +1,19 @@
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  width: 100%;
-  min-height: 100vh;
-  background-color: rgba(30, 33, 38, 0.075);
-};
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(30, 33, 38, 0.075);
+    font-family: toma_sansregular;
+    overflow: hidden;
+}
 
-/* 
-.header {
-  display: flex;
-  flex-direction: row;
-  background-color: green;
-} */
+@font-face {
+    font-family: 'toma_sansregular';
+    src: url("../src/resources/fonts/TomaSans/jam_type_design_-_toma_sans_regular-webfont.ttf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}

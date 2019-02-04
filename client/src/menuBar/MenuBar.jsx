@@ -7,8 +7,8 @@ class MenuBar extends Component {
   render() { 
     return ( 
       <React.Fragment>
-        <div className="container-menu">
-      
+        <div className="container-menu" id="sidebar">
+          <div className="logo">LOGO</div>
         </div>
       </React.Fragment>
      );

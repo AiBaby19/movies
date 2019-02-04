@@ -1,0 +1,11 @@
+.home-container {
+ width: auto;
+ display: flex;
+}
+
+.home-headline {
+  margin: 0 auto;
+  width: 85%;
+  margin-top: 100px;
+  font-weight: 200;    
+}
