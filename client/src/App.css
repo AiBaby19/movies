@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: rgba(30, 33, 38, 0.075);
+};
+
+/* 
+.header {
+  display: flex;
+  flex-direction: row;
+  background-color: green;
+} */
