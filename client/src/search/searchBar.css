@@ -18,10 +18,26 @@
 }
 
 .searchInput {
-    width: 75%;
-    height: 35px;
+    width: 70%;
+    height: 40px;
     border: none;
     padding-left: 15px;
+}
+
+.btn {
+    width: 120px;
+    height: 40px;
+    background-color: #90E04A;
+    color: white;
+    font-size: 16px;
+    border: none;
+    font-family: toma_sansregular;
+}
+
+.btn:hover {
+    background-color: rgb(183, 245, 129);
+    color: black;
+    cursor: pointer;
 }
 
 .filter {

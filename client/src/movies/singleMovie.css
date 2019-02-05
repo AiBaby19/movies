@@ -1,0 +1,7 @@
+.movieDiv {
+  border: 1px solid gray;
+  height: 220px;
+  width: 180px;
+  margin: 30px 15px;
+  font-size: 18px;
+}

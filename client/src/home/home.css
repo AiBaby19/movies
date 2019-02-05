@@ -1,11 +1,13 @@
 .home-container {
  width: auto;
  display: flex;
+ flex-direction: column;
+ height: 100vh;
 }
 
 .home-headline {
   margin: 0 auto;
   width: 85%;
-  margin-top: 100px;
+  margin-top: 60px;
   font-weight: 200;    
 }
