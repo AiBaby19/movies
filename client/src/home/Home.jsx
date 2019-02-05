@@ -10,22 +10,28 @@ class Home extends Component {
         movieList: []
     }
 
-    renderNewRelease = async () => {
+    componentDidMount() {
+        this.renderNewRelease();
+    }
+
+    deleteDuplicates = (arr) => {
+        const isEqual = (a, b) => a.imdbID === b.imdbID;
+        return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
+    }
+
+    renderNewRelease = async() => {
         let data = {};
-        
+
         await Axios
             .get(`https://www.omdbapi.com/?apikey=${apiKey}&s=batman`)
             .then(res => {
                 data = res.data.Search;
+                data = this.deleteDuplicates(data)
+
             })
             .catch(err => console.log(err));
 
-        this.setState({ movieList: data });
-            // console.log('state.data', this.state.movieList)        
-    }
-
-    componentDidMount() {
-        this.renderNewRelease();
+        this.setState({movieList: data});
     }
 
     render() {
@@ -33,7 +39,7 @@ class Home extends Component {
             <React.Fragment>
                 <div className="home-container">
                     <h1 className="home-headline">New Releases</h1>
-                    
+
                     <MovieList movieList={this.state.movieList}/>
 
                 </div>

@@ -5,5 +5,9 @@
   justify-content: space-around;
   align-content: space-between;
   flex-wrap: wrap;
-  width: 90%;
+  width: 85%;
+  padding: 10px;
+  margin-top: 30px;
+  /* border: 1px green solid; */
+
 }

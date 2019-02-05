@@ -6,10 +6,11 @@
 body {
     width: 100%;
     min-height: 100vh;
-    background-color: rgba(30, 33, 38, 0.075);
+    background-color: #1e2126;
     font-family: toma_sansregular;
     font-weight: 200;
-    overflow: hidden;
+    color: white;
+    overflow-x: hidden;
 }
 
 @font-face {
