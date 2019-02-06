@@ -12,9 +12,10 @@ class SingleMovies extends Component {
         return (
             <React.Fragment>
                 <div className="movie-div">
+
                     <div className="inner-div">
 
-                        <div className="img-div" onClick={() => this.props.toggleModal()}>
+                        <div className="img-div">
                             <img
                                 src={this.props.poster}
                                 alt={this.props.title}
@@ -24,8 +25,13 @@ class SingleMovies extends Component {
                             }}/>
                         </div>
 
-                        
-                        <div className="btn-div">
+                        <div className="edit-btn-div" >
+                            <button
+                                className="edit-btn"
+                                onClick={() => this.props.toggleModal()}>EDIT</button>
+                        </div>
+
+                        <div className="exit-btn-div">
                             <button
                                 className="close-btn"
                                 onClick={() => this.props.deleteMovie(this.props.imdbID)}>X</button>
