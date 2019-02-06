@@ -13,6 +13,10 @@ body {
     overflow-x: hidden;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 @font-face {
     font-family: 'toma_sansregular';
     src: url("../src/resources/fonts/TomaSans/jam_type_design_-_toma_sans_regular-webfont.ttf") format("opentype");

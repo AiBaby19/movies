@@ -9,6 +9,13 @@ class MenuBar extends Component {
       <React.Fragment>
         <div className="container-menu" id="sidebar">
           <div className="logo">LOGO</div>
+          <div className="ul-contianer">
+          <ul className="ulMenu">
+            <li>HOME</li>
+            <li>FAVORITES</li>
+            <li>CONTACT</li>
+          </ul>
+          </div>
         </div>
       </React.Fragment>
      );

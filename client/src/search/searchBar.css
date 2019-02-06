@@ -39,7 +39,6 @@
 .btn:hover {
     background-color: rgb(183, 245, 129);
     color: black;
-    cursor: pointer;
 }
 
 .filter {

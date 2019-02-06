@@ -1,0 +1,22 @@
+.modal-div {
+  position: fixed;
+  left: 50%;
+  top: 50%; 
+  margin-left: -150px;
+  margin-top: -150px;
+  width: 600px;
+  height: 400px;
+  background-color: black; 
+}
+
+.exit-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px;
+}
+
+.content-div {
+
+}
+
