@@ -11,7 +11,7 @@ class MovieList extends Component {
             .movieList
             .map(({Title, Poster, imdbID}) => {
                 return (
-                    <SingleMovie key={imdbID} title={Title} poster={Poster} className=""/>
+                    <SingleMovie deleteMovie={this.props.deleteMovie} toggleModal={this.props.toggleModal}key={imdbID} imdbID={imdbID} title={Title} poster={Poster} className=""/>
                 )
             });
 
@@ -19,7 +19,6 @@ class MovieList extends Component {
     }
 
     render() {
-        // console.log('movieList', this.props.movieList)
         return (
             <React.Fragment>
                 <div className="movie-list ">
