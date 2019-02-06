@@ -13,9 +13,10 @@ class App extends Component {
     state = {
         movieList: [],
         isModalOpen: false,
-        movieInModal: {},
-        // movieID: ''
+        movieInModal: {}
     }
+
+
 
     //render movie list at startup
     componentDidMount() {
@@ -24,15 +25,10 @@ class App extends Component {
 
     //open & close Modal
     toggleModal = (movieID) => {
-        console.log(movieID)
+        //!! find a way to wait for the setstate => now transfering empty undefined in keys
         this.getFullMovieInfo(movieID)
-        // const movieListCopy = [...this.state.movieList]; console.log('movieListCopy',
-        // movieListCopy) const movieIndex = movieListCopy.findIndex(movie =>
-        // movie.imdbID === movieID)
         this.setState({
             isModalOpen: !this.state.isModalOpen,
-            // movieID: movieID
-            // movieIndexToModal: movieIndex
         });
     }
 
@@ -71,14 +67,23 @@ class App extends Component {
         let data = {};
 
         await Axios
-            .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}`)
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
             .then(res => {
-                data = res.data;
-                console.log('res', data)
+                // res = res.data;
+                data = {
+                    imdbID: res.data.imdbID,
+                    title: res.data.Title,
+                    year: res.data.Year,
+                    runTime: res.data.Runtime,
+                    genre: res.data.Genre,
+                    director: res.data.Director,
+                    // plot: res.data.Plot,
+                    poster: res.data.Poster
+                }
             })
+            .then(() => this.setState({movieInModal: data}))
             .catch(err => console.log(err));
 
-        // this.setState({movieList: data});
     }
 
     render() {
@@ -91,7 +96,7 @@ class App extends Component {
                     deleteMovie={this.deleteMovie}
                     movieList={this.state.movieList}/> {this.state.isModalOpen
                     ? <Modal
-                            movieInModal={this.state.movieList[this.state.movieIndexToModal]}
+                            movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
                             movieList={this.state.movieList}/>
                     : null}
