@@ -1,0 +1,16 @@
+.movieDiv {
+    border: 1px solid transparent;
+    min-height: 220px;
+    width: 180px;
+    margin-bottom: 45px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.inner-div {
+  border-radius: 5px;
+}
+
+.inner-div:hover {
+  cursor: pointer;
+}

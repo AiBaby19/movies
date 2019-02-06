@@ -1,0 +1,31 @@
+.container-menu {
+    top: 0;
+    left: 0;
+    background-color: black;
+    min-height: 100vh;
+    height: auto;
+    width: auto;
+    min-width: 220px;
+    float: left;
+    overflow: hidden;
+}
+
+#sidebar {
+    margin-bottom: -101%;
+    padding-bottom: 101%;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px;
+    width: auto;
+    font-size: 46px;
+    color: white;
+    font-family: PhosphatePro-Solid;
+}
+@font-face {
+    font-family: PhosphatePro-Solid;
+    src: url("../resources/fonts/phosphate/PhosphatePro-Inline.otf") format("opentype");
+}
