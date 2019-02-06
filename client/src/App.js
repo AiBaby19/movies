@@ -54,37 +54,60 @@ class App extends Component {
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
 
+    // getMovieIndex = () => {
+    //     const movieListCopy = [...this.state.movieList];
+    //     const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === MovieID)
+    // }
+
+
     //delete movies from list - User Choice
-    deleteMovie = (MovieID) => {
+    deleteMovie = (movieID) => {
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === MovieID)
+        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === movieID)
         movieListCopy.splice(movieIndex, 1);
         this.setState({movieList: movieListCopy});
     }
 
     //get full movie info to modal
+    //!!clean this function up
     getFullMovieInfo = async(movieID) => {
         let data = {};
-
+        if(this.state.movieList) {
+        const movieListCopy = [...this.state.movieList];
+        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === movieID)
+        this.setState({ movieInModal: this.state.movieList[movieIndex] }); 
+        return
+        }
         await Axios
             .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
             .then(res => {
                 // res = res.data;
                 data = {
                     imdbID: res.data.imdbID,
-                    title: res.data.Title,
-                    year: res.data.Year,
-                    runTime: res.data.Runtime,
-                    genre: res.data.Genre,
-                    director: res.data.Director,
+                    Title: res.data.Title,
+                    Year: res.data.Year,
+                    RunTime: res.data.Runtime,
+                    Genre: res.data.Genre,
+                    Director: res.data.Director,
                     // plot: res.data.Plot,
-                    poster: res.data.Poster
+                    Poster: res.data.Poster
                 }
             })
             .then(() => this.setState({movieInModal: data}))
             .catch(err => console.log(err));
 
     }
+
+    saveEditedInfo = (newInfo, movieID) => {
+        const movieListCopy = [...this.state.movieList];
+        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === newInfo.imdbID)
+        
+        movieListCopy.splice(movieIndex, 1, newInfo);
+        console.log('movieListCopy', movieListCopy)
+        this.setState({movieList: movieListCopy});
+    }
+
+//!turn the keys in the object to lowercase
 
     render() {
         return (
@@ -98,7 +121,8 @@ class App extends Component {
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
-                            movieList={this.state.movieList}/>
+                            movieList={this.state.movieList}
+                            saveEditedInfo={this.saveEditedInfo}/>
                     : null}
             </div>
         );

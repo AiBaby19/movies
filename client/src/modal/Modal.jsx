@@ -5,30 +5,49 @@ class Modal extends Component {
     constructor() {
         super();
     }
-    state = {}
+    state = {
+       infoState: {}
+    }
+
+
+    editInfoToState = (e, infoState, key) => {
+        infoState[key] = e.currentTarget.value;
+        //!! fix image isnt showing
+        // this.setState({ [key]: e.currentTarget.value });
+        this.setState({ infoState });
+        console.log('state', this.state.infoState)
+
+    }
 
     renderMovieInfo = () => {
+        let infoState = {}
         return Object
             .keys(this.props.movieInModal)
             .map(key => {
-                if (key === 'imdbID' || key === 'poster') {
+                if (key === 'imdbID' || key === 'Poster') {
                     //!! reconstruct it to be cleaner
                     return
                 } else {
+                    
+                    infoState[key] = this.props.movieInModal[key];
+                    infoState.imdbID = this.props.movieInModal.imdbID;
+                    infoState.Poster = this.props.movieInModal.Poster;
+
                     return (
                         <div key={key} className="movie-info">
                             <b
                                 style={{
                                 textTransform: 'uppercase'
-                            }}>{key}</b>: {this.state[key].length === 0 ? this.props.movieInModal[key] : this.state[key]}
+                            }}>{key}</b>: {this.state.infoState[key] ? this.state.infoState[key] : this.props.movieInModal[key]}
                             <input
                                 type="text"
                                 id="fields"
-                                className={this.state[key]
-                                ? 'show-placeholder'
-                                : null}
+
+                                //!!FIX BELOW
+                                className={this.state.infoState[key] && this.state.infoState[key] > 0 ? 'show-placeholder': null}
                                 placeholder={`Edit ${key}`}
-                                onChange={(e) => this.setState({[key]: e.currentTarget.value})}/>
+                                onChange={(e) => this.editInfoToState(e, infoState, key)}/>
+                                {/* onChange={(e) => this.setState({[key]: e.currentTarget.value})}/> */}
                         </div>
                     )
                 }
@@ -38,6 +57,7 @@ class Modal extends Component {
     render() {
 
         const movie = this.props.movieInModal
+        // let infoState = {};
 
         return (
             <React.Fragment>
@@ -53,12 +73,12 @@ class Modal extends Component {
                         </div>
 
                         <div className="img-content">
-                            <img src={movie.poster} alt={movie.title} height="350" width="250"/>
+                            <img src={movie.Poster} alt={movie.Title} height="350" width="250"/>
                         </div>
                     </div>
 
                     <div className="saveCancelBtn">
-                        <button className="btn">SAVE</button>
+                        <button className="btn" onClick={() => this.props.saveEditedInfo(this.state.infoState)}>SAVE</button>
                         <button className="btn btn-cancel">CANCEL</button>
                     </div>
                 </div>
