@@ -3,17 +3,18 @@ import Axios from 'axios';
 import SearchBar from './search/SearchBar';
 import MenuBar from './menuBar/MenuBar';
 import Modal from './modal/Modal';
-import MovieList from './movies/MovieList';
 import Home from './home/Home';
 import './App.css';
 
-const apiKey = '3c722a44';
+// const apiKey = '3c722a44';
 
 class App extends Component {
 
     state = {
         movieList: [],
-        isModalOpen: false
+        isModalOpen: false,
+        movieInModal: {},
+        // movieID: ''
     }
 
     //render movie list at startup
@@ -22,9 +23,16 @@ class App extends Component {
     }
 
     //open & close Modal
-    toggleModal = () => {
+    toggleModal = (movieID) => {
+        console.log(movieID)
+        this.getFullMovieInfo(movieID)
+        // const movieListCopy = [...this.state.movieList]; console.log('movieListCopy',
+        // movieListCopy) const movieIndex = movieListCopy.findIndex(movie =>
+        // movie.imdbID === movieID)
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen,
+            // movieID: movieID
+            // movieIndexToModal: movieIndex
         });
     }
 
@@ -33,7 +41,7 @@ class App extends Component {
         let data = {};
 
         await Axios
-            .get(`https://www.omdbapi.com/?apikey=${apiKey}&s=batman`)
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor&tomatoes=true`)
             .then(res => {
                 data = res.data.Search;
                 data = this.deleteDuplicates(data)
@@ -58,6 +66,21 @@ class App extends Component {
         this.setState({movieList: movieListCopy});
     }
 
+    //get full movie info to modal
+    getFullMovieInfo = async(movieID) => {
+        let data = {};
+
+        await Axios
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}`)
+            .then(res => {
+                data = res.data;
+                console.log('res', data)
+            })
+            .catch(err => console.log(err));
+
+        // this.setState({movieList: data});
+    }
+
     render() {
         return (
             <div>
@@ -67,7 +90,10 @@ class App extends Component {
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
                     movieList={this.state.movieList}/> {this.state.isModalOpen
-                    ? <Modal toggleModal={this.toggleModal} movieList={this.state.movieList}/>
+                    ? <Modal
+                            movieInModal={this.state.movieList[this.state.movieIndexToModal]}
+                            toggleModal={this.toggleModal}
+                            movieList={this.state.movieList}/>
                     : null}
             </div>
         );

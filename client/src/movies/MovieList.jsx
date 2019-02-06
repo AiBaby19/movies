@@ -14,8 +14,6 @@ class MovieList extends Component {
                     <SingleMovie deleteMovie={this.props.deleteMovie} toggleModal={this.props.toggleModal}key={imdbID} imdbID={imdbID} title={Title} poster={Poster} className=""/>
                 )
             });
-
-
     }
 
     render() {

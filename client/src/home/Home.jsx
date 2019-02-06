@@ -16,7 +16,7 @@ class Home extends Component {
                 <div className="home-container">
                     <h1 className="home-headline">New Releases</h1>
 
-                    <MovieList toggleModal={this.props.toggleModal} movieList={this.props.movieList} deleteMovie={this.props.deleteMovie}/>
+                    <MovieList toggleModal={this.props.toggleModal} movieList={this.props.movieList} deleteMovie={this.props.deleteMovie} fullMovieInfo={this.props.fullMovieInfo}/>
 
                 </div>
             </React.Fragment>
