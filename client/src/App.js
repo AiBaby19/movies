@@ -3,17 +3,17 @@ import Axios from 'axios';
 import SearchBar from './search/SearchBar';
 import MenuBar from './menuBar/MenuBar';
 import Modal from './modal/Modal';
-import MovieList from './movies/MovieList';
 import Home from './home/Home';
 import './App.css';
 
-const apiKey = '3c722a44';
+// const apiKey = '3c722a44';
 
 class App extends Component {
 
     state = {
         movieList: [],
-        isModalOpen: false
+        isModalOpen: false,
+        movieInModal: {}
     }
 
     //render movie list at startup
@@ -22,10 +22,12 @@ class App extends Component {
     }
 
     //open & close Modal
-    toggleModal = () => {
+    toggleModal = (movieID) => {
+        // !! find a way to wait for the setstate => now transfering empty undefined in
+        // keys
         this.setState({
             isModalOpen: !this.state.isModalOpen
-        });
+        }, ()=> this.getFullMovieInfo(movieID));
     }
 
     //fetch movie list AJAX
@@ -33,7 +35,7 @@ class App extends Component {
         let data = {};
 
         await Axios
-            .get(`https://www.omdbapi.com/?apikey=${apiKey}&s=batman`)
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor&tomatoes=true`)
             .then(res => {
                 data = res.data.Search;
                 data = this.deleteDuplicates(data)
@@ -50,13 +52,63 @@ class App extends Component {
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
 
+    getMovieIndex = (movieID) => {
+        return this
+            .state
+            .movieList
+            .findIndex(movie => movie.imdbID === movieID)
+    }
+
     //delete movies from list - User Choice
-    deleteMovie = (MovieID) => {
+    deleteMovie = (movieID) => {
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === MovieID)
+        const movieIndex = this.getMovieIndex(movieID)
         movieListCopy.splice(movieIndex, 1);
         this.setState({movieList: movieListCopy});
     }
+
+    saveEditedInfo = (newInfo) => {
+        const movieListCopy = [...this.state.movieList];
+        const movieIndex = this.getMovieIndex(newInfo.imdbID)
+        movieListCopy.splice(movieIndex, 1, newInfo);
+        this.setState({movieList: movieListCopy});
+    }
+
+    //get full movie info to modal
+    getFullMovieInfo = async(movieID) => {
+        if(!this.state.isModalOpen) {
+            return;
+        }
+
+        let data = {};
+        const movieIndex = this.getMovieIndex(movieID)
+
+        if (Object.keys(this.state.movieList[movieIndex]).length > 5) {
+            this.setState({movieInModal: this.state.movieList[movieIndex]});
+
+        } else {
+            await Axios
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
+            .then(res => {
+                // res = res.data;
+                data = {
+                    imdbID: res.data.imdbID,
+                    Title: res.data.Title,
+                    Year: res.data.Year,
+                    RunTime: res.data.Runtime,
+                    Genre: res.data.Genre,
+                    Director: res.data.Director,
+                    // plot: res.data.Plot,
+                    Poster: res.data.Poster
+                }
+            })
+            .then(() => this.setState({movieInModal: data}))
+            .catch(err => console.log(err));
+        }
+
+    }
+
+    //!turn the keys in the object to lowercase
 
     render() {
         return (
@@ -67,7 +119,11 @@ class App extends Component {
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
                     movieList={this.state.movieList}/> {this.state.isModalOpen
-                    ? <Modal toggleModal={this.toggleModal} movieList={this.state.movieList}/>
+                    ? <Modal
+                            movieInModal={this.state.movieInModal}
+                            toggleModal={this.toggleModal}
+                            movieList={this.state.movieList}
+                            saveEditedInfo={this.saveEditedInfo}/>
                     : null}
             </div>
         );

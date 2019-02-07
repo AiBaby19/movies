@@ -4,10 +4,8 @@ import './singleMovie.css'
 class SingleMovies extends Component {
     state = {}
 
-    handleModal = (modalState) => {}
-
     render() {
-        console.log('singlemovie imdbID', this.props.imdbID)
+        // console.log('singlemovie imdbID', this.props.imdbID)
 
         return (
             <React.Fragment>
@@ -28,7 +26,7 @@ class SingleMovies extends Component {
                         <div className="edit-btn-div" >
                             <button
                                 className="edit-btn"
-                                onClick={() => this.props.toggleModal()}>EDIT</button>
+                                onClick={() => this.props.toggleModal(this.props.imdbID)}>EDIT</button>
                         </div>
 
                         <div className="exit-btn-div">
