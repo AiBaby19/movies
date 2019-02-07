@@ -16,8 +16,6 @@ class App extends Component {
         movieInModal: {}
     }
 
-
-
     //render movie list at startup
     componentDidMount() {
         this.renderNewRelease();
@@ -25,11 +23,11 @@ class App extends Component {
 
     //open & close Modal
     toggleModal = (movieID) => {
-        //!! find a way to wait for the setstate => now transfering empty undefined in keys
-        this.getFullMovieInfo(movieID)
+        // !! find a way to wait for the setstate => now transfering empty undefined in
+        // keys
         this.setState({
-            isModalOpen: !this.state.isModalOpen,
-        });
+            isModalOpen: !this.state.isModalOpen
+        }, ()=> this.getFullMovieInfo(movieID));
     }
 
     //fetch movie list AJAX
@@ -54,31 +52,42 @@ class App extends Component {
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
 
-    // getMovieIndex = () => {
-    //     const movieListCopy = [...this.state.movieList];
-    //     const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === MovieID)
-    // }
-
+    getMovieIndex = (movieID) => {
+        return this
+            .state
+            .movieList
+            .findIndex(movie => movie.imdbID === movieID)
+    }
 
     //delete movies from list - User Choice
     deleteMovie = (movieID) => {
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === movieID)
+        const movieIndex = this.getMovieIndex(movieID)
         movieListCopy.splice(movieIndex, 1);
         this.setState({movieList: movieListCopy});
     }
 
-    //get full movie info to modal
-    //!!clean this function up
-    getFullMovieInfo = async(movieID) => {
-        let data = {};
-        if(this.state.movieList) {
+    saveEditedInfo = (newInfo) => {
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === movieID)
-        this.setState({ movieInModal: this.state.movieList[movieIndex] }); 
-        return
+        const movieIndex = this.getMovieIndex(newInfo.imdbID)
+        movieListCopy.splice(movieIndex, 1, newInfo);
+        this.setState({movieList: movieListCopy});
+    }
+
+    //get full movie info to modal
+    getFullMovieInfo = async(movieID) => {
+        if(!this.state.isModalOpen) {
+            return;
         }
-        await Axios
+
+        let data = {};
+        const movieIndex = this.getMovieIndex(movieID)
+
+        if (Object.keys(this.state.movieList[movieIndex]).length > 5) {
+            this.setState({movieInModal: this.state.movieList[movieIndex]});
+
+        } else {
+            await Axios
             .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
             .then(res => {
                 // res = res.data;
@@ -95,19 +104,11 @@ class App extends Component {
             })
             .then(() => this.setState({movieInModal: data}))
             .catch(err => console.log(err));
+        }
 
     }
 
-    saveEditedInfo = (newInfo, movieID) => {
-        const movieListCopy = [...this.state.movieList];
-        const movieIndex = movieListCopy.findIndex(movie => movie.imdbID === newInfo.imdbID)
-        
-        movieListCopy.splice(movieIndex, 1, newInfo);
-        console.log('movieListCopy', movieListCopy)
-        this.setState({movieList: movieListCopy});
-    }
-
-//!turn the keys in the object to lowercase
+    //!turn the keys in the object to lowercase
 
     render() {
         return (

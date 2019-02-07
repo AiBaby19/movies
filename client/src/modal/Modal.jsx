@@ -12,10 +12,7 @@ class Modal extends Component {
 
     editInfoToState = (e, infoState, key) => {
         infoState[key] = e.currentTarget.value;
-        //!! fix image isnt showing
-        // this.setState({ [key]: e.currentTarget.value });
         this.setState({ infoState });
-        console.log('state', this.state.infoState)
 
     }
 
