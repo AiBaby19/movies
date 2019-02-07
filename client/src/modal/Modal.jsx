@@ -2,18 +2,23 @@ import React, {Component} from 'react';
 import './modal.css';
 
 class Modal extends Component {
-    constructor() {
-        super();
-    }
+
     state = {
        infoState: {}
     }
 
 
     editInfoToState = (e, infoState, key) => {
+        if(key === 'Year' && key !== Number) {
+            alert('numbers')
+            e.currentTarget.value = '';
+            return;
+        }
+
+        //!! USE REGEX
+
         infoState[key] = e.currentTarget.value;
         this.setState({ infoState });
-
     }
 
     renderMovieInfo = () => {
@@ -44,7 +49,7 @@ class Modal extends Component {
                                 className={this.state.infoState[key] && this.state.infoState[key] > 0 ? 'show-placeholder': null}
                                 placeholder={`Edit ${key}`}
                                 onChange={(e) => this.editInfoToState(e, infoState, key)}/>
-                                {/* onChange={(e) => this.setState({[key]: e.currentTarget.value})}/> */}
+                                {/* onChange={(e) => this.setState({infoState[key]: e.currentTarget.value})}/> */}
                         </div>
                     )
                 }
@@ -54,7 +59,6 @@ class Modal extends Component {
     render() {
 
         const movie = this.props.movieInModal
-        // let infoState = {};
 
         return (
             <React.Fragment>
@@ -76,7 +80,7 @@ class Modal extends Component {
 
                     <div className="saveCancelBtn">
                         <button className="btn" onClick={() => this.props.saveEditedInfo(this.state.infoState)}>SAVE</button>
-                        <button className="btn btn-cancel">CANCEL</button>
+                        <button className="btn btn-cancel" onClick={() => this.props.toggleModal()}>CANCEL</button>
                     </div>
                 </div>
             </React.Fragment>

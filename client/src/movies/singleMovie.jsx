@@ -32,9 +32,9 @@ class SingleMovies extends Component {
                         <div className="exit-btn-div">
                             <button
                                 className="close-btn"
-                                onClick={() => this.props.deleteMovie(this.props.imdbID)}>X</button>
+                                onClick={() => this.props.togglePopUp(this.props.imdbID)}>X</button>
                         </div>
-
+                        
                     </div>
 
                     <h5>{this.props.title}</h5>

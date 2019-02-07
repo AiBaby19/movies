@@ -4,6 +4,7 @@ import SearchBar from './search/SearchBar';
 import MenuBar from './menuBar/MenuBar';
 import Modal from './modal/Modal';
 import Home from './home/Home';
+import PopUp from './popUp/PopUp';
 import './App.css';
 
 // const apiKey = '3c722a44';
@@ -13,7 +14,10 @@ class App extends Component {
     state = {
         movieList: [],
         isModalOpen: false,
-        movieInModal: {}
+        isPopUpOpen: false,
+        movieInModal: {},
+        imdbDelete: '',
+        popSaveMovie: '',
     }
 
     //render movie list at startup
@@ -23,12 +27,19 @@ class App extends Component {
 
     //open & close Modal
     toggleModal = (movieID) => {
-        // !! find a way to wait for the setstate => now transfering empty undefined in
-        // keys
         this.setState({
             isModalOpen: !this.state.isModalOpen
-        }, ()=> this.getFullMovieInfo(movieID));
+        }, () => this.getFullMovieInfo(movieID));
     }
+
+    togglePopUp = (imdbDelete) => {
+        this.setState({
+            isPopUpOpen: !this.state.isPopUpOpen,
+            imdbDelete: imdbDelete
+        });
+    }
+
+    
 
     //fetch movie list AJAX
     renderNewRelease = async() => {
@@ -60,23 +71,34 @@ class App extends Component {
     }
 
     //delete movies from list - User Choice
-    deleteMovie = (movieID) => {
+    deleteMovie = (imdbDelete) => {
+        console.log('delete', imdbDelete)
+        // this.setState({     isPopUpOpen: !this.state.isPopUpOpen }, () => {
+
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = this.getMovieIndex(movieID)
+        const movieIndex = this.getMovieIndex(imdbDelete)
         movieListCopy.splice(movieIndex, 1);
-        this.setState({movieList: movieListCopy});
+        this.setState({
+            movieList: movieListCopy,
+            isPopUpOpen: !this.state.isPopUpOpen
+        });
+        // });
+
     }
 
     saveEditedInfo = (newInfo) => {
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(newInfo.imdbID)
         movieListCopy.splice(movieIndex, 1, newInfo);
-        this.setState({movieList: movieListCopy});
+        this.setState({
+            movieList: movieListCopy,
+            isModalOpen: !this.state.isModalOpen
+        });
     }
 
     //get full movie info to modal
     getFullMovieInfo = async(movieID) => {
-        if(!this.state.isModalOpen) {
+        if (!this.state.isModalOpen) {
             return;
         }
 
@@ -88,22 +110,22 @@ class App extends Component {
 
         } else {
             await Axios
-            .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
-            .then(res => {
-                // res = res.data;
-                data = {
-                    imdbID: res.data.imdbID,
-                    Title: res.data.Title,
-                    Year: res.data.Year,
-                    RunTime: res.data.Runtime,
-                    Genre: res.data.Genre,
-                    Director: res.data.Director,
-                    // plot: res.data.Plot,
-                    Poster: res.data.Poster
-                }
-            })
-            .then(() => this.setState({movieInModal: data}))
-            .catch(err => console.log(err));
+                .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
+                .then(res => {
+                    // res = res.data;
+                    data = {
+                        imdbID: res.data.imdbID,
+                        Title: res.data.Title,
+                        Year: res.data.Year,
+                        RunTime: res.data.Runtime,
+                        Genre: res.data.Genre,
+                        Director: res.data.Director,
+                        // plot: res.data.Plot,
+                        Poster: res.data.Poster
+                    }
+                })
+                .then(() => this.setState({movieInModal: data}))
+                .catch(err => console.log(err));
         }
 
     }
@@ -118,12 +140,20 @@ class App extends Component {
                 <Home
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
-                    movieList={this.state.movieList}/> {this.state.isModalOpen
+                    movieList={this.state.movieList}
+                    togglePopUp={this.togglePopUp}/> {this.state.isModalOpen
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
+                            togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
                             saveEditedInfo={this.saveEditedInfo}/>
+                    : null}
+                {this.state.isPopUpOpen
+                    ? <PopUp
+                            togglePopUp={this.togglePopUp}
+                            deleteMovie={this.deleteMovie}
+                            imdbDelete={this.state.imdbDelete}/>
                     : null}
             </div>
         );

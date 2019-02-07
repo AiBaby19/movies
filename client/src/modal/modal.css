@@ -27,7 +27,6 @@
 
 .written-content {
     flex-direction: column;
-
 }
 
 .img-content,
@@ -37,21 +36,16 @@
 }
 
 #fields {
-  display: none;
-  width: 280px;
-  height: 25px;
-  border: 1px grey solid;
-  border-radius: 3px;
-  padding-left: 5px;
+    display: none;
+    width: 280px;
+    height: 25px;
+    border: 1px grey solid;
+    border-radius: 3px;
+    padding-left: 5px;
 }
-
 
 .movie-info:hover > #fields {
-  display: block;
-}
-
-.show-placeholder#fields {
-  display: block;
+    display: block;
 }
 
 .saveCancelBtn {
@@ -63,4 +57,8 @@
 
 .btn-cancel {
     background-color: red;
+}
+
+.btn-cancel:hover {
+    background-color: rgb(255, 100, 100);
 }
