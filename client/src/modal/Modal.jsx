@@ -13,11 +13,8 @@ class Modal extends Component {
 
 
     // .replace(/\s+/g, " ")
-    verifyEditedInfo = (e, editedText, key) => {
-        if (key === 'Year' && e.currentTarget.value.match(/[a-z,A-Z]/g)) {
-            return alert('please provide proper year')
-        };
-
+    cleanUpEditeText = (e, editedText, key) => {
+        // if(!e.currentTarget.value) {alert('fill fields')}
         if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
             let verifiedText = e
                 .currentTarget
@@ -69,7 +66,7 @@ class Modal extends Component {
                                 type="text"
                                 id="fields"
                                 placeholder={`Edit ${key}`}
-                                onChange={(e) => this.verifyEditedInfo(e, editedText, key)}/>
+                                onChange={(e) => this.cleanUpEditeText(e, editedText, key)}/>
 
                         </div>
                     )
@@ -101,7 +98,7 @@ class Modal extends Component {
                     <div className="saveCancelBtn">
                         <button
                             className="btn"
-                            onClick={() => this.props.saveEditedInfo(this.state)}>SAVE</button>
+                            onClick={() => this.props.verifyEditedInfo(this.state)}>SAVE</button>
                         <button className="btn btn-cancel" onClick={() => this.props.toggleModal()}>CANCEL</button>
                     </div>
                 </div>

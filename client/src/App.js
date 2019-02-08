@@ -88,9 +88,39 @@ class App extends Component {
     //     console.log('editedText')
        
     // }
+
        
+        verifyEditedInfo = (textCleanedInfo) => {
+            //checking there arent whitespaces
+            for(let value in textCleanedInfo){
+                if(textCleanedInfo[value].match(/^\s+$/)) {
+                    alert('please dont leave empty fields')
+                    return;
+                }
+            }
+
+            console.log('textCleanedInfo', textCleanedInfo)
+        // if(!e.currentTarget.length){
+        //     alert('please dont leave empty fields')
+        // }
+       
+        // if (key === 'Year' && key > new Date().getFullYear){
+           
+            // if(e.currentTarget.value.match(/[a-z,A-Z]/g) || 
+            // 2020<){
+                
+            // 
+            // saveEditedInfo(verifiedInfo);
+
+        };
+
+
+        
+ 
 
     saveEditedInfo = (editedInfo) => {
+
+     
 
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(editedInfo.imdbID)
@@ -152,7 +182,7 @@ class App extends Component {
                             toggleModal={this.toggleModal}
                             togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
-                            saveEditedInfo={this.saveEditedInfo}/>
+                            verifyEditedInfo={this.verifyEditedInfo}/>
                     : null}
                 {this.state.isPopUpOpen
                     ? <PopUp
