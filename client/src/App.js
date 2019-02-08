@@ -17,7 +17,7 @@ class App extends Component {
         isPopUpOpen: false,
         movieInModal: {},
         imdbDelete: '',
-        popSaveMovie: ''
+        popApprove: false
     }
 
     //render movie list at startup
@@ -32,11 +32,20 @@ class App extends Component {
         }, () => this.getFullMovieInfo(movieID));
     }
 
-    togglePopUp = (imdbDelete) => {
+    approveDeletePopUp = (imdbDelete) => {
         this.setState({
             isPopUpOpen: !this.state.isPopUpOpen,
-            imdbDelete: imdbDelete
+            imdbDelete
         });
+    }
+
+    approveSaveMovie = () => {
+        if (this.state.popApprove === false) {
+            return
+        }
+
+        return true;
+
     }
 
     //fetch movie list AJAX
@@ -47,7 +56,7 @@ class App extends Component {
             .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor&tomatoes=true`)
             .then(res => {
                 data = res.data.Search;
-                data = this.deleteDuplicates(data)
+                data = this.deleteDuplicatesImdb(data)
 
             })
             .catch(err => console.log(err));
@@ -56,9 +65,20 @@ class App extends Component {
     }
 
     //delete duplicates from fetched movie list
-    deleteDuplicates = (arr) => {
+    deleteDuplicatesImdb = (arr) => {
         const isEqual = (a, b) => a.imdbID === b.imdbID;
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
+    }
+
+    deleteDuplicateTitle(textCleanedInfo) {
+        let tempMovieList = [...this.state.movieList];
+        for (let i = 0; i < tempMovieList.length; i++) {
+            if (textCleanedInfo['Title'] === tempMovieList[0]['Title']) {
+                return true;
+            }
+        }
+
+        return textCleanedInfo;
     }
 
     getMovieIndex = (movieID) => {
@@ -70,9 +90,6 @@ class App extends Component {
 
     //delete movies from list - User Choice
     deleteMovie = (imdbDelete) => {
-        console.log('delete', imdbDelete)
-        // this.setState({     isPopUpOpen: !this.state.isPopUpOpen }, () => {
-
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(imdbDelete)
         movieListCopy.splice(movieIndex, 1);
@@ -80,51 +97,35 @@ class App extends Component {
             movieList: movieListCopy,
             isPopUpOpen: !this.state.isPopUpOpen
         });
-        // });
-
     }
 
-    // renderEditedInfo = (editedText) => {
-    //     console.log('editedText')
-       
-    // }
+    verifyEditedInfo = (textCleanedInfo) => {
+        for (let value in textCleanedInfo) {
+            if (textCleanedInfo[value].match(/^\s+$/)) {
+                alert('please dont leave empty fields')
+                return;
+            };
 
-       
-        verifyEditedInfo = (textCleanedInfo) => {
-            //checking there arent whitespaces
-            for(let value in textCleanedInfo){
-                if(textCleanedInfo[value].match(/^\s+$/)) {
-                    alert('please dont leave empty fields')
-                    return;
-                }
-            }
-
-            console.log('textCleanedInfo', textCleanedInfo)
-        // if(!e.currentTarget.length){
-        //     alert('please dont leave empty fields')
-        // }
-       
-        // if (key === 'Year' && key > new Date().getFullYear){
-           
-            // if(e.currentTarget.value.match(/[a-z,A-Z]/g) || 
-            // 2020<){
-                
-            // 
-            // saveEditedInfo(verifiedInfo);
+            if (value === 'Year' && (textCleanedInfo[value] > new Date().getFullYear() || textCleanedInfo[value] < 1920)) {
+                alert('please enter a valid date')
+            };
 
         };
 
+        const readyEditedInfo = this.deleteDuplicateTitle(textCleanedInfo)
+        this.setState({
+            popSaveMovie: true
+        }, this.approveSaveMovie())
 
-        
- 
+    };
 
-    saveEditedInfo = (editedInfo) => {
+    saveEditedInfo = (readyEditedInfo) => {
 
-     
+        //add saving approvment
 
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = this.getMovieIndex(editedInfo.imdbID)
-        movieListCopy.splice(movieIndex, 1, editedInfo);
+        const movieIndex = this.getMovieIndex(readyEditedInfo.imdbID)
+        movieListCopy.splice(movieIndex, 1, readyEditedInfo);
         this.setState({
             movieList: movieListCopy,
             isModalOpen: !this.state.isModalOpen
@@ -176,19 +177,21 @@ class App extends Component {
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
                     movieList={this.state.movieList}
-                    togglePopUp={this.togglePopUp}/> {this.state.isModalOpen
+                    approveDeletePopUp={this.approveDeletePopUp}/> {this.state.isModalOpen
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
-                            togglePopUp={this.togglePopUp}
+                            approveDeletePopUp={this.approveDeletePopUp}
                             movieList={this.state.movieList}
                             verifyEditedInfo={this.verifyEditedInfo}/>
                     : null}
                 {this.state.isPopUpOpen
                     ? <PopUp
-                            togglePopUp={this.togglePopUp}
+                            popApprove={this.popApprove}
+                            approveDeletePopUp={this.approveDeletePopUp}
                             deleteMovie={this.deleteMovie}
-                            imdbDelete={this.state.imdbDelete}/>
+                            imdbDelete={this.state.imdbDelete}
+                            approveSaveMovie={this.state.approveSaveMovie}/>
                     : null}
             </div>
         );

@@ -11,7 +11,7 @@ class MovieList extends Component {
             .movieList
             .map(({Title, Poster, imdbID}) => {
                 return (
-                    <SingleMovie key={imdbID} deleteMovie={this.props.deleteMovie} togglePopUp={this.props.togglePopUp}toggleModal={this.props.toggleModal}key={imdbID} imdbID={imdbID} title={Title} poster={Poster}/>
+                    <SingleMovie key={imdbID} deleteMovie={this.props.deleteMovie} approveDeletePopUp={this.props.approveDeletePopUp}toggleModal={this.props.toggleModal} imdbID={imdbID} title={Title} poster={Poster}/>
                 )
             });
     }

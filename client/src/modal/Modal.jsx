@@ -12,9 +12,7 @@ class Modal extends Component {
       }
 
 
-    // .replace(/\s+/g, " ")
     cleanUpEditeText = (e, editedText, key) => {
-        // if(!e.currentTarget.value) {alert('fill fields')}
         if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
             let verifiedText = e
                 .currentTarget
