@@ -6,18 +6,13 @@ class PopUp extends Component {
     render() {
         console.log('popsave', this.props.popSaveMovie)
         return (
-            // <div style={{
-            //     display: 'flex'
-            // }}>                {this.props.popSaveMovie ?}
-                <div className="popUp-div">
-                {/* {console.log('popsave', this.props.popSaveMovie)} */}
 
+                <div className="popUp-div">
                 <div className="inner-popup-div">
                     <p>Are you sure you want to <span><b style={{fontWeight: '700'}}>DELETE</b></span> this movie?</p>
-                    {/* <p></p> */}
                     <div className="btn-div">
                         <button className="btn" onClick={() => this.props.deleteMovie(this.props.imdbDelete)}>CONFIRM</button>
-                        <button className="btn btn-cancel" onClick={() => this.props.approveDeletePopUp()}>CANCEL</button>
+                        <button className="btn btn-cancel" onClick={() => this.props.togglePopUp()}>CANCEL</button>
                     </div>
                     </div>
                 </div>

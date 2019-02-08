@@ -5,6 +5,7 @@ import MenuBar from './menuBar/MenuBar';
 import Modal from './modal/Modal';
 import Home from './home/Home';
 import PopUp from './popUp/PopUp';
+import SavePopUp from './popUp/SavePopUp';
 import './App.css';
 
 // const apiKey = '3c722a44';
@@ -17,7 +18,9 @@ class App extends Component {
         isPopUpOpen: false,
         movieInModal: {},
         imdbDelete: '',
-        popApprove: false
+        popApprove: false,
+        approvedTextInfo: {},
+        popSaveMovie: false
     }
 
     //render movie list at startup
@@ -32,20 +35,11 @@ class App extends Component {
         }, () => this.getFullMovieInfo(movieID));
     }
 
-    approveDeletePopUp = (imdbDelete) => {
-        this.setState({
-            isPopUpOpen: !this.state.isPopUpOpen,
-            imdbDelete
-        });
-    }
-
     approveSaveMovie = () => {
         if (this.state.popApprove === false) {
             return
         }
-
         return true;
-
     }
 
     //fetch movie list AJAX
@@ -70,15 +64,26 @@ class App extends Component {
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
 
+    squencekiller = () => {
+        this.setState({popSaveMovie: false});
+        return false;
+    }
+
+    //!why loop isnt returning?!
     deleteDuplicateTitle(textCleanedInfo) {
+        let copy = false;
         let tempMovieList = [...this.state.movieList];
         for (let i = 0; i < tempMovieList.length; i++) {
             if (textCleanedInfo['Title'] === tempMovieList[0]['Title']) {
-                return true;
+                // this.setState({ :  });
+                return;
             }
         }
+        //!why loop isnt returning?!
+        console.log('copy', copy)
 
         return textCleanedInfo;
+
     }
 
     getMovieIndex = (movieID) => {
@@ -86,6 +91,14 @@ class App extends Component {
             .state
             .movieList
             .findIndex(movie => movie.imdbID === movieID)
+    }
+
+    togglePopUp = (imdbDelete) => {
+        this.setState({
+            isPopUpOpen: !this.state.isPopUpOpen,
+            imdbDelete
+        });
+        return;
     }
 
     //delete movies from list - User Choice
@@ -109,27 +122,40 @@ class App extends Component {
             if (value === 'Year' && (textCleanedInfo[value] > new Date().getFullYear() || textCleanedInfo[value] < 1920)) {
                 alert('please enter a valid date')
             };
-
         };
 
-        const readyEditedInfo = this.deleteDuplicateTitle(textCleanedInfo)
-        this.setState({
-            popSaveMovie: true
-        }, this.approveSaveMovie())
+        const approvedTextInfo = this.deleteDuplicateTitle(textCleanedInfo)
+
+        this.setState({popSaveMovie: true, approvedTextInfo})
 
     };
 
-    saveEditedInfo = (readyEditedInfo) => {
-
-        //add saving approvment
-
+    saveEditedInfo = () => {
+        if (!this.state.approvedTextInfo) {
+            alert('already have this name');
+            this.setState({
+                popSaveMovie: false
+            }, () => {
+                return
+            });
+            return
+        }
+        const approvedTextInfo = this.state.approvedTextInfo;
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = this.getMovieIndex(readyEditedInfo.imdbID)
-        movieListCopy.splice(movieIndex, 1, readyEditedInfo);
+        const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
+        movieListCopy.splice(movieIndex, 1, approvedTextInfo);
         this.setState({
             movieList: movieListCopy,
-            isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen,
+            popSaveMovie: false
         });
+    }
+
+    toggleSavePopUp = () => {
+        this.setState({
+            popSaveMovie: !this.state.popSaveMovie
+        });
+        return;
     }
 
     //get full movie info to modal
@@ -176,22 +202,31 @@ class App extends Component {
                 <Home
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
-                    movieList={this.state.movieList}
-                    approveDeletePopUp={this.approveDeletePopUp}/> {this.state.isModalOpen
+                    togglePopUp={this.togglePopUp}
+                    movieList={this.state.movieList}/> {this.state.isModalOpen
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
-                            approveDeletePopUp={this.approveDeletePopUp}
+                            togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
                             verifyEditedInfo={this.verifyEditedInfo}/>
                     : null}
                 {this.state.isPopUpOpen
                     ? <PopUp
-                            popApprove={this.popApprove}
-                            approveDeletePopUp={this.approveDeletePopUp}
-                            deleteMovie={this.deleteMovie}
+                            togglePopUp={this.togglePopUp}
+                            popUDenied={this.popUDenied}
                             imdbDelete={this.state.imdbDelete}
-                            approveSaveMovie={this.state.approveSaveMovie}/>
+                            deleteMovie={this.deleteMovie}
+                            approveSaveMovie={this.state.approveSaveMovie}
+                            approvedTextInfo={this.state.approvedTextInfo}/>
+
+                    : null}
+
+                {this.state.popSaveMovie
+                    ? <SavePopUp
+                            popSaveMovie={this.state.popSaveMovie}
+                            toggleSavePopUp={this.toggleSavePopUp}
+                            saveEditedInfo={this.saveEditedInfo}/>
                     : null}
             </div>
         );
