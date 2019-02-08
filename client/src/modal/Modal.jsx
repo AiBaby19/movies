@@ -1,63 +1,83 @@
 import React, {Component} from 'react';
 import './modal.css';
 
+
 class Modal extends Component {
+  state = {}
+   
+    componentDidMount(){
+        setTimeout(() => {this.setState({...this.props.movieInModal})},500)
+          
+     
+      }
 
-    state = {
-       infoState: {}
-    }
 
+    // .replace(/\s+/g, " ")
+    verifyEditedInfo = (e, editedText, key) => {
+        if (key === 'Year' && e.currentTarget.value.match(/[a-z,A-Z]/g)) {
+            return alert('please provide proper year')
+        };
 
-    editInfoToState = (e, infoState, key) => {
-        if(key === 'Year' && key !== Number) {
-            alert('numbers')
-            e.currentTarget.value = '';
-            return;
-        }
+        if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
+            let verifiedText = e
+                .currentTarget
+                .value
+                .replace(/[^a-z0-9]/gmi, " ")
+                .toLowerCase()
+                .split(' ')
+                .map((letter) => letter.charAt(0).toUpperCase() + letter.substring(1))
+                .join(' ');
 
-        //!! USE REGEX
+            editedText[key] = verifiedText || editedText[key];
+            
+        };
 
-        infoState[key] = e.currentTarget.value;
-        this.setState({ infoState });
-    }
+        this.setState((prevState) => ({
+                [key]: editedText[key],
+            ...prevState.state
+            })
+        );
+    };
+
 
     renderMovieInfo = () => {
-        let infoState = {}
-        return Object
+        let editedText = {}
+
+       return Object
             .keys(this.props.movieInModal)
             .map(key => {
                 if (key === 'imdbID' || key === 'Poster') {
                     //!! reconstruct it to be cleaner
                     return
                 } else {
-                    
-                    infoState[key] = this.props.movieInModal[key];
-                    infoState.imdbID = this.props.movieInModal.imdbID;
-                    infoState.Poster = this.props.movieInModal.Poster;
+
+                    editedText[key] = this.props.movieInModal[key];
+
+                    //hard coded and not rendered to text & cannot be edited
+                    editedText.imdbID = this.props.movieInModal.imdbID;
+                    editedText.Poster = this.props.movieInModal.Poster;
 
                     return (
                         <div key={key} className="movie-info">
                             <b
                                 style={{
                                 textTransform: 'uppercase'
-                            }}>{key}</b>: {this.state.infoState[key] ? this.state.infoState[key] : this.props.movieInModal[key]}
+                            }}>{key}</b>: {this.state[key]
+                                ? this.state[key]
+                                : this.props.movieInModal[key]}
                             <input
                                 type="text"
                                 id="fields"
-
-                                //!!FIX BELOW
-                                className={this.state.infoState[key] && this.state.infoState[key] > 0 ? 'show-placeholder': null}
                                 placeholder={`Edit ${key}`}
-                                onChange={(e) => this.editInfoToState(e, infoState, key)}/>
-                                {/* onChange={(e) => this.setState({infoState[key]: e.currentTarget.value})}/> */}
+                                onChange={(e) => this.verifyEditedInfo(e, editedText, key)}/>
+
                         </div>
                     )
                 }
-            })
+            })            
     }
 
     render() {
-
         const movie = this.props.movieInModal
 
         return (
@@ -79,7 +99,9 @@ class Modal extends Component {
                     </div>
 
                     <div className="saveCancelBtn">
-                        <button className="btn" onClick={() => this.props.saveEditedInfo(this.state.infoState)}>SAVE</button>
+                        <button
+                            className="btn"
+                            onClick={() => this.props.saveEditedInfo(this.state)}>SAVE</button>
                         <button className="btn btn-cancel" onClick={() => this.props.toggleModal()}>CANCEL</button>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ class App extends Component {
         isPopUpOpen: false,
         movieInModal: {},
         imdbDelete: '',
-        popSaveMovie: '',
+        popSaveMovie: ''
     }
 
     //render movie list at startup
@@ -38,8 +38,6 @@ class App extends Component {
             imdbDelete: imdbDelete
         });
     }
-
-    
 
     //fetch movie list AJAX
     renderNewRelease = async() => {
@@ -86,10 +84,17 @@ class App extends Component {
 
     }
 
-    saveEditedInfo = (newInfo) => {
+    // renderEditedInfo = (editedText) => {
+    //     console.log('editedText')
+       
+    // }
+       
+
+    saveEditedInfo = (editedInfo) => {
+
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = this.getMovieIndex(newInfo.imdbID)
-        movieListCopy.splice(movieIndex, 1, newInfo);
+        const movieIndex = this.getMovieIndex(editedInfo.imdbID)
+        movieListCopy.splice(movieIndex, 1, editedInfo);
         this.setState({
             movieList: movieListCopy,
             isModalOpen: !this.state.isModalOpen
