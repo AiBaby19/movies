@@ -93,7 +93,7 @@ class Modal extends Component {
                 if (cleanText[value].match(/[a-zA-Z]/g)) {
                     this
                         .props
-                        .toggleAlert('Please only use numbers.');
+                        .toggleAlert('Use numbers for the Year.');
                     return;
                 };
             };
