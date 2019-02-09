@@ -23,7 +23,7 @@ class App extends Component {
 
     //render movie list at startup
     componentDidMount() {
-        this.renderOnStartUp();
+        this.fetchFirstList();
     }
 
     toggleModal = (movieID) => {
@@ -42,18 +42,25 @@ class App extends Component {
     };
 
     //fetch first movie list AJAX
-    renderOnStartUp = async() => {
+
+    fetchFirstList = async() => {
         let data = {};
 
         await Axios
-            .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor&tomatoes=true`)
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor`)
             .then(res => {
                 data = res.data.Search;
-                data = this.deleteDuplicatesImdb(data);
+                console.log(data)
+                this.renderMovieList(data)
 
             })
             .catch(err => console.log(err));
+        }
 
+
+
+    renderMovieList = (data) => {
+        data = this.deleteDuplicatesImdb(data);
         this.setState({movieList: data});
     };
 
@@ -82,7 +89,6 @@ class App extends Component {
     //delete movies from list - User Choice
     deleteMovie = () => {
         const deleteId = this.state.deleteIdOrVerifiedInfo;
-        // const delteID = this.state.imdbDelete
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(deleteId)
         movieListCopy.splice(movieIndex, 1);
@@ -139,7 +145,7 @@ class App extends Component {
         return (
             <div>
                 <MenuBar/>
-                <SearchBar/>
+                <SearchBar renderMovieList={this.renderMovieList}/>
                 <Home
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}

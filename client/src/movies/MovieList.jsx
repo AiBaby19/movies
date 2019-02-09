@@ -14,7 +14,7 @@ export default(props) => {
                     toggleModal={props.toggleModal}
                     imdbID={imdbID}
                     title={Title}
-                    poster={Poster}/>)
+                    poster={Poster === 'N/A' ? '/resources/img/Blank.png': Poster}/>)
             });
     };
 

@@ -6,6 +6,7 @@ export default(props) => {
         <div className="movie-div">
             <div className="inner-div">
                 <div className="img-div">
+                {console.log(props.poster)}
                     <img
                         src={props.poster}
                         alt={props.title}
