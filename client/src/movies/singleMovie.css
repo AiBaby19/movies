@@ -16,7 +16,6 @@
     border-radius: 5px;
     border: 1px solid rgb(58, 58, 58);
 }
-
 .img-div:hover {
     /* cursor: pointer; */
 }
@@ -24,7 +23,6 @@
 .inner-div {
     position: relative;
 }
-
 .inner-div:hover > .edit-btn-div {
     display: flex;
     justify-content: center;
@@ -36,20 +34,34 @@
     z-index: 10;
     margin-top: -40px;
 }
-
 .inner-div:hover > .exit-btn-div {
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  width: 170px;
-  height: 40px;
-  background-color: black;
-  /* opacity: 0.9; */
-  z-index: 10;
-  margin-top: -222px;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 170px;
+    height: 40px;
+    background-color: black;
+    z-index: 10;
+    margin-top: -222px;
 }
 
-.exit-btn-div, .edit-btn-div {
+/* .inner-div:hover > .add-btn-div {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    margin-left: 60px;
+    border-radius: 50px;
+    background-color: black;
+    overflow: hidden;
+    z-index: 10;
+    margin-top: -138px;
+} */
+
+.edit-btn-div,
+.exit-btn-div,
+.edit-btn {
     display: none;
 }
 
@@ -67,14 +79,27 @@
 }
 
 .edit-btn {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  font-size: 22px;
-  font-weight: 400;
-  background-color: inherit;
-  color: white;
-  border: none;
-  opacity: 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 22px;
+    font-weight: 400;
+    background-color: inherit;
+    color: white;
+    border: none;
+    opacity: 1;
 }
+
+/* .add-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    font-size: 22px;
+    font-weight: 400;
+    background-color: inherit;
+    color: white;
+    border: none;
+    opacity: 1;
+} */

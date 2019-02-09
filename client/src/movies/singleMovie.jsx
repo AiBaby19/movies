@@ -16,13 +16,20 @@ export default(props) => {
                     }}/>
                 </div>
 
+                <div className="exit-btn-div">
+                    <button className="close-btn" onClick={() => props.togglePopUp(props.imdbID, "delete")}>X</button>
+                </div>
+
+                {/* <div className="add-btn-div">
+                    <button className="add-btn" onClick={() => props.toggleModal(props.imdbID)}>ADD</button>
+                </div> */}
+
+
                 <div className="edit-btn-div">
                     <button className="edit-btn" onClick={() => props.toggleModal(props.imdbID)}>EDIT</button>
                 </div>
 
-                <div className="exit-btn-div">
-                    <button className="close-btn" onClick={() => props.togglePopUp(props.imdbID, "delete")}>X</button>
-                </div>
+         
 
             </div>
 
