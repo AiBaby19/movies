@@ -100,7 +100,7 @@ class App extends Component {
     saveEditedInfo = () => {
         const approvedTextInfo = this.state.deleteIdOrVerifiedInfo;
         if(approvedTextInfo['Poster'] === "N/A") {
-            approvedTextInfo['Poster'] = 'public/resources/img/blank.png'
+            approvedTextInfo['Poster'] = 'resources/img/blank.png'
         }
         console.log('approvedTextInfo', approvedTextInfo)
 
@@ -140,7 +140,7 @@ class App extends Component {
                         Poster: res.data.Poster
                     }
                     if(data['Poster'] === "N/A") {
-                        data['Poster'] = 'public/resources/img/blank.png'
+                        data['Poster'] = 'resources/img/blank.png'
                     }
                 })
                 .then(() => this.setState({movieInModal: data}))
