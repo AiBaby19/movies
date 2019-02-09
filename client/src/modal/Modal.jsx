@@ -2,84 +2,149 @@ import React, {Component} from 'react';
 import './modal.css';
 
 class Modal extends Component {
-    constructor() {
-        super();
-    }
-    state = {
-       infoState: {}
-    }
 
+    state = {};
 
-    editInfoToState = (e, infoState, key) => {
-        infoState[key] = e.currentTarget.value;
-        this.setState({ infoState });
-
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                ...this.props.movieInModal
+            })
+        }, 500)
     }
 
+    //render each movie filed and add an onchange event to each field
     renderMovieInfo = () => {
-        let infoState = {}
+        let editedText = {}
+        console.log(this.props.movieInModal)
         return Object
             .keys(this.props.movieInModal)
             .map(key => {
                 if (key === 'imdbID' || key === 'Poster') {
-                    //!! reconstruct it to be cleaner
-                    return
+                    return;
                 } else {
-                    
-                    infoState[key] = this.props.movieInModal[key];
-                    infoState.imdbID = this.props.movieInModal.imdbID;
-                    infoState.Poster = this.props.movieInModal.Poster;
+                    editedText[key] = this.props.movieInModal[key];
+
+                    //hard coded and not rendered to text & cannot be edited
+                    editedText.imdbID = this.props.movieInModal.imdbID;
+                    editedText.Poster = this.props.movieInModal.Poster;
 
                     return (
                         <div key={key} className="movie-info">
                             <b
                                 style={{
                                 textTransform: 'uppercase'
-                            }}>{key}</b>: {this.state.infoState[key] ? this.state.infoState[key] : this.props.movieInModal[key]}
+                            }}>{key}</b>: {this.state[key]
+                                ? this.state[key]
+                                : this.props.movieInModal[key]}
                             <input
                                 type="text"
                                 id="fields"
-
-                                //!!FIX BELOW
-                                className={this.state.infoState[key] && this.state.infoState[key] > 0 ? 'show-placeholder': null}
                                 placeholder={`Edit ${key}`}
-                                onChange={(e) => this.editInfoToState(e, infoState, key)}/>
-                                {/* onChange={(e) => this.setState({[key]: e.currentTarget.value})}/> */}
+                                onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
                         </div>
                     )
-                }
-            })
+                };
+            });
+    };
+
+    //STARTING EDITED INFO VERIFYING SEQUENCE
+    cleanUpEditedText = (e, editedText, key) => {
+        if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
+            let verifiedText = e
+                .currentTarget
+                .value
+                .replace(/[^a-z0-9]/gmi, " ")
+                .toLowerCase()
+                .split(' ')
+                .map((letter) => letter.charAt(0).toUpperCase() + letter.substring(1))
+                .join(' ');
+
+            editedText[key] = verifiedText || editedText[key];
+        };
+
+        this.setState((prevState) => ({
+            [key]: editedText[key],
+            ...prevState.state
+        }));
+    };
+
+    verifyEditedInfo = () => {
+        const cleanText = {
+            ...this.state
+        }
+
+        for (let value in cleanText) {
+            if (cleanText[value].match(/^\s+$/)) {
+                this
+                    .props
+                    .toggleAlert('please dont leave empty fields.');
+                return;
+            };
+
+            if (value === 'Year') {
+                if (cleanText[value] > new Date().getFullYear() || cleanText[value] < 1920) {
+                    this
+                        .props
+                        .toggleAlert('Please provide a reasonable year.');
+                    return;
+                };
+
+                if (cleanText[value].match(/[a-zA-Z]/g)) {
+                    this
+                        .props
+                        .toggleAlert('Please only use numbers.');
+                    return;
+                };
+            };
+        };
+        this.findDuplicateTitle();
+    };
+
+    findDuplicateTitle() {
+        let tempMovieList = this.props.movieList;
+
+        for (let i = 0; i < tempMovieList.length; i++) {
+            if (this.state['imdbID'] !== tempMovieList[0]['imdbID'] && this.state['Title'] === tempMovieList[0]['Title']) {
+                this
+                    .props
+                    .toggleAlert('Title already exist, Choose another name.');
+                return;
+            }
+        }
+
+        this
+            .props
+            .togglePopUp(this.state, 'save');
     }
 
-    render() {
+ 
 
+    render() {
         const movie = this.props.movieInModal
-        // let infoState = {};
 
         return (
-            <React.Fragment>
-                <div className="modal-div">
-                    <button className="exit-btn" onClick={() => this.props.toggleModal()}>X</button>
+            <div className="modal-div">
+                <button className="exit-btn" onClick={() => this.props.toggleModal()}>X</button>
 
-                    <div className="content-div">
-                        <div className="written-content">
-                            <div>
-                                <b>IMDB ID</b>: {movie.imdbID}
-                            </div>
-                            {this.renderMovieInfo()}
+                <div className="content-div">
+                    <div className="written-content">
+                        <div>
+                            <b>IMDB ID</b>: {movie.imdbID}
                         </div>
-
-                        <div className="img-content">
-                            <img src={movie.Poster} alt={movie.Title} height="350" width="250"/>
-                        </div>
+                        {this.renderMovieInfo()}
                     </div>
 
-                    <div className="saveCancelBtn">
-                        <button className="btn" onClick={() => this.props.saveEditedInfo(this.state.infoState)}>SAVE</button>
-                        <button className="btn btn-cancel">CANCEL</button>
+                    <div className="img-content">
+                        <img src={movie.Poster} alt={movie.Title} height="350" width="250"/>
                     </div>
                 </div>
-            </React.Fragment>
+
+                <div className="saveCancelBtn">
+                    <button className="btn" onClick={() => this.verifyEditedInfo()}>SAVE</button>
+                    <button className="btn btn-cancel" onClick={() => this.props.toggleModal()}>CANCEL</button>
+                </div>
+            </div>
         );
     }
 }

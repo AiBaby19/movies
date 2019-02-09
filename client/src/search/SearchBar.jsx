@@ -2,43 +2,37 @@ import React, { Component } from 'react';
 import './searchBar.css';
 import Axios from 'axios';
 
-const apiKey = '3c722a44';
-const link = 'http://www.omdbapi.com/?apikey=[yourkey]&'
+
 
 class SearchBar extends Component {
-
-    constructor() {
-        super();
-        this.state = {
-            movieTitle: '',
-            
-        }
+    state = {
+        movieTitle: ''
     }
 
     getMovieData = async () => {
+        const searchQuery = this.state.movieTitle
         let data = {};
         await Axios
-            .get(`https://www.omdbapi.com/?apikey=${apiKey}&s=batman`)
+            .get(`https://www.omdbapi.com/?apikey=3c722a44&s=${searchQuery}`)
             .then(res => {
                 data = res.data.Search;
+                this.props.renderMovieList(data)
             })
             .catch(err => console.log(err));
     }
 
-    state = {}
     render() {
+        console.log(this.state.movieTitle)
         return (
-            <React.Fragment>
                 <div className="container">
                     <div className="wrapper">
-                        <input className="searchInput" type="text" placeholder="Search A Movie..." onChange={()=> console.log('nun')}/>
+                        <input className="searchInput" type="text" placeholder="Search A Movie..." onChange={(e)=> this.setState({ movieTitle: e.currentTarget.value })}/>
                         <button className="btn" onClick={() => this.getMovieData()}>SEARCH</button>
-                        <div className="filter">
+                        {/* <div className="filter">
                             FILTER
-                        </div>
+                        </div> */}
                     </div>
                 </div>
-            </React.Fragment>
         );
     }
 }

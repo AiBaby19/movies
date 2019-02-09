@@ -11,6 +11,7 @@ body {
     font-weight: 200;
     color: white;
     overflow-x: hidden;
+    
 }
 
 button:hover {
@@ -22,4 +23,8 @@ button:hover {
     src: url("../src/resources/fonts/TomaSans/jam_type_design_-_toma_sans_regular-webfont.ttf") format("opentype");
     font-weight: normal;
     font-style: normal;
+}
+
+@media only screen and (max-width:800px) {
+   /* height: 40px; */
 }

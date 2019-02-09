@@ -9,9 +9,11 @@
     background-color: black;
     z-index: 10;
     border: grey 1px solid;
+
 }
 
 .exit-btn {
+    text-align: left;
     background-color: black;
     color: white;
     border: none;
@@ -27,7 +29,6 @@
 
 .written-content {
     flex-direction: column;
-
 }
 
 .img-content,
@@ -37,21 +38,20 @@
 }
 
 #fields {
-  display: none;
-  width: 280px;
-  height: 25px;
-  border: 1px grey solid;
-  border-radius: 3px;
-  padding-left: 5px;
+    display: none;
+    width: 280px;
+    height: 25px;
+    border: 1px grey solid;
+    border-radius: 3px;
+    padding-left: 5px;
 }
-
 
 .movie-info:hover > #fields {
-  display: block;
+    display: block;
 }
 
-.show-placeholder#fields {
-  display: block;
+.show-placeholder {
+    display: block !important;
 }
 
 .saveCancelBtn {
@@ -63,4 +63,40 @@
 
 .btn-cancel {
     background-color: red;
+}
+
+.btn-cancel:hover {
+    background-color: rgb(255, 100, 100);
+}
+
+
+@media only screen and (max-width:670px) {
+    .modal-div {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        margin-left: -208px;
+        margin-top: -650px;
+        width: 400px;
+        height: auto;
+        min-height: 600px;
+        padding-bottom: 30px;
+    }
+
+    .content-div {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        justify-content: center;
+        text-align: center;    
+    }
+
+    .saveCancelBtn {
+        display: flex;
+        justify-content: space-around;
+        margin: 25px auto 0;
+        width: 300px;
+    }
 }

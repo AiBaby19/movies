@@ -45,3 +45,19 @@
     font-family: PhosphatePro-Solid;
     src: url("../resources/fonts/phosphate/PhosphatePro-Inline.otf") format("opentype");
 }
+
+
+@media only screen and (max-width:670px) {
+    #sidebar {
+        all: initial;
+    }
+    .ulMenu, .logo{
+        display: none;
+    }
+}
+
+@media only screen and (max-width:800px) {
+    #sidebar {
+        padding-bottom: 150%;
+    }
+}
