@@ -99,9 +99,9 @@ class App extends Component {
 
     saveEditedInfo = () => {
         const approvedTextInfo = this.state.deleteIdOrVerifiedInfo;
-        // if(approvedTextInfo['Poster'] === "N/A") {
-        //     approvedTextInfo['Poster'] = '/resources/img/blank.png'
-        // }
+        if(approvedTextInfo['Poster'] === "N/A") {
+            approvedTextInfo['Poster'] = '/resources/img/blank.png'
+        }
         console.log('approvedTextInfo', approvedTextInfo)
 
         const movieListCopy = [...this.state.movieList];
@@ -139,9 +139,9 @@ class App extends Component {
                         Director: res.data.Director,
                         Poster: res.data.Poster
                     }
-                    // if(data.Poster === "N/A") {
-                    //     data.Poster = 
-                    // }
+                    if(data['Poster'] === "N/A") {
+                        data['Poster'] = '/resources/img/blank.png'
+                    }
                 })
                 .then(() => this.setState({movieInModal: data}))
                 .catch(err => console.log(err));
