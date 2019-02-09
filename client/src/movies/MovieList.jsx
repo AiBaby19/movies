@@ -9,7 +9,7 @@ class MovieList extends Component {
         return this
             .props
             .movieList
-            .map(({Title, Poster, imdbID}) => {
+            .map(({Title, Poster, imdbID, index}) => {
                 return (
                     <SingleMovie key={imdbID} togglePopUp={this.props.togglePopUp} toggleModal={this.props.toggleModal} imdbID={imdbID} title={Title} poster={Poster}/>
                 )

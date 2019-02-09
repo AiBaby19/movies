@@ -6,6 +6,7 @@ import Modal from './modal/Modal';
 import Home from './home/Home';
 import PopUp from './popUp/PopUp';
 import SavePopUp from './popUp/SavePopUp';
+import AlertPopUp from './popUp/AlertPopUp';
 import './App.css';
 
 // const apiKey = '3c722a44';
@@ -20,7 +21,9 @@ class App extends Component {
         imdbDelete: '',
         popApprove: false,
         approvedTextInfo: {},
-        popSaveMovie: false
+        popSaveMovie: false,
+        isAlert: false,
+        alertType: ''
     }
 
     //render movie list at startup
@@ -35,11 +38,12 @@ class App extends Component {
         }, () => this.getFullMovieInfo(movieID));
     }
 
-    approveSaveMovie = () => {
-        if (this.state.popApprove === false) {
-            return
-        }
-        return true;
+    toggleAlert = (alertType) => {
+        this.setState({
+            isAlert: !this.state.isAlert,
+            alertType: alertType
+        });
+        return;
     }
 
     //fetch movie list AJAX
@@ -63,9 +67,6 @@ class App extends Component {
         const isEqual = (a, b) => a.imdbID === b.imdbID;
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
-
-  
-   
 
     getMovieIndex = (movieID) => {
         return this
@@ -93,52 +94,16 @@ class App extends Component {
         });
     }
 
-    verifyEditedInfo = (textCleanedInfo) => {
-        for (let value in textCleanedInfo) {
-            if (textCleanedInfo[value].match(/^\s+$/)) {
-                alert('please dont leave empty fields')
-                return;
-            };
-
-            if (value === 'Year' && (textCleanedInfo[value] > new Date().getFullYear() || textCleanedInfo[value] < 1920 || value.match(/[0-9]/g))) {
-                alert('please enter a valid date');
-                return;
-            };
-        };
-
-        const approvedTextInfo = this.deleteDuplicateTitle(textCleanedInfo)
-
-        // this.setState({popSaveMovie: true, approvedTextInfo})
-
-    };
-
-     //!why loop isnt returning?!
-     deleteDuplicateTitle(textCleanedInfo) {
-        let copy = false;
-        let tempMovieList = [...this.state.movieList];
-        for (let i = 0; i < tempMovieList.length; i++) {
-            if (textCleanedInfo['Title'] === tempMovieList[0]['Title']) {
-                // this.setState({ :  });
-                return;
-            }
-        }
-        //!why loop isnt returning?!
-        console.log('copy', copy)
-
-        return textCleanedInfo;
-
+    toggleSavePopUp = (approvedTextInfo) => {
+        this.setState({
+            popSaveMovie: !this.state.popSaveMovie,
+            approvedTextInfo
+        });
+        // return;
     }
 
     saveEditedInfo = () => {
-        if (!this.state.approvedTextInfo) {
-            alert('already have this name');
-            this.setState({
-                popSaveMovie: false
-            }, () => {
-                return
-            });
-            return
-        }
+
         const approvedTextInfo = this.state.approvedTextInfo;
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
@@ -148,13 +113,6 @@ class App extends Component {
             isModalOpen: !this.state.isModalOpen,
             popSaveMovie: false
         });
-    }
-
-    toggleSavePopUp = () => {
-        this.setState({
-            popSaveMovie: !this.state.popSaveMovie
-        });
-        return;
     }
 
     //get full movie info to modal
@@ -208,7 +166,9 @@ class App extends Component {
                             toggleModal={this.toggleModal}
                             togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
-                            verifyEditedInfo={this.verifyEditedInfo}/>
+                            verifyEditedInfo={this.verifyEditedInfo}
+                            toggleSavePopUp={this.toggleSavePopUp}
+                            toggleAlert={this.toggleAlert}/>
                     : null}
                 {this.state.isPopUpOpen
                     ? <PopUp
@@ -226,6 +186,12 @@ class App extends Component {
                             popSaveMovie={this.state.popSaveMovie}
                             toggleSavePopUp={this.toggleSavePopUp}
                             saveEditedInfo={this.saveEditedInfo}/>
+                    : null}
+
+                {this.state.isAlert
+                    ? <AlertPopUp 
+                            toggleAlert={this.toggleAlert} 
+                            alertType={this.state.alertType}/>
                     : null}
             </div>
         );

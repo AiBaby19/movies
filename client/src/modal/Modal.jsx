@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import './modal.css';
 
-
 class Modal extends Component {
-  state = {}
-   
-    componentDidMount(){
-        setTimeout(() => {this.setState({...this.props.movieInModal})},500)
-          
-     
-      }
+    state = {}
 
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                ...this.props.movieInModal
+            })
+        }, 500)
 
+    }
+
+    //STARTING INFO VERIFYING SEQUENCE
     cleanUpEditedText = (e, editedText, key) => {
         if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
             let verifiedText = e
@@ -25,28 +27,60 @@ class Modal extends Component {
 
             editedText[key] = verifiedText || editedText[key];
         };
-    
+
         this.setState((prevState) => ({
-                [key]: editedText[key],
+            [key]: editedText[key],
             ...prevState.state
-            })
-        );
+        }));
     };
 
+    verifyEditedInfo = () => {
+        const cleanText = {
+            ...this.state
+        }
+        for (let value in cleanText) {
+            if (cleanText[value].match(/^\s+$/)) {
+                this.props.toggleAlert('please dont leave empty fields.');
+                return;
+            };
 
+            if(value === 'Year') {
+                if (cleanText[value] > new Date().getFullYear() || cleanText[value] < 1920) {
+                    this.props.toggleAlert('Please provide a reasonable year.');
+                    return;
+                };
 
+                if(cleanText[value].match(/[a-zA-Z]/g)) {
+                    this.props.toggleAlert('Please only use numbers.');
+                    return;
+                };
+            };
+        };
+        this.findDuplicateTitle();
+    };
+
+    findDuplicateTitle() {
+        let tempMovieList = this.props.movieList;
+
+        for (let i = 0; i < tempMovieList.length; i++) {
+            if (this.state['imdbID'] !== tempMovieList[0]['imdbID'] && this.state['Title'] === tempMovieList[0]['Title']) {
+                this.props.toggleAlert('Title already exist, Choose another name.');
+                return;
+            }
+        }
+
+        this.props.toggleSavePopUp(this.state);
+    }
 
     renderMovieInfo = () => {
         let editedText = {}
 
-       return Object
+        return Object
             .keys(this.props.movieInModal)
             .map(key => {
                 if (key === 'imdbID' || key === 'Poster') {
-                    //!! reconstruct it to be cleaner
-                    return
+                    return;
                 } else {
-
                     editedText[key] = this.props.movieInModal[key];
 
                     //hard coded and not rendered to text & cannot be edited
@@ -70,7 +104,7 @@ class Modal extends Component {
                         </div>
                     )
                 }
-            })            
+            })
     }
 
     render() {
@@ -95,9 +129,7 @@ class Modal extends Component {
                     </div>
 
                     <div className="saveCancelBtn">
-                        <button
-                            className="btn"
-                            onClick={() => this.props.verifyEditedInfo(this.state)}>SAVE</button>
+                        <button className="btn" onClick={() => this.verifyEditedInfo()}>SAVE</button>
                         <button className="btn btn-cancel" onClick={() => this.props.toggleModal()}>CANCEL</button>
                     </div>
                 </div>
