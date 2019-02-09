@@ -9,9 +9,11 @@
     background-color: black;
     z-index: 10;
     border: grey 1px solid;
+
 }
 
 .exit-btn {
+    text-align: left;
     background-color: black;
     color: white;
     border: none;
@@ -65,4 +67,36 @@
 
 .btn-cancel:hover {
     background-color: rgb(255, 100, 100);
+}
+
+
+@media only screen and (max-width:670px) {
+    .modal-div {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        margin-left: -208px;
+        margin-top: -650px;
+        width: 400px;
+        height: auto;
+        min-height: 600px;
+        padding-bottom: 30px;
+    }
+
+    .content-div {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+        justify-content: center;
+        text-align: center;    
+    }
+
+    .saveCancelBtn {
+        display: flex;
+        justify-content: space-around;
+        margin: 25px auto 0;
+        width: 300px;
+    }
 }
