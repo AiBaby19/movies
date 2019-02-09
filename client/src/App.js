@@ -64,27 +64,8 @@ class App extends Component {
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
     }
 
-    squencekiller = () => {
-        this.setState({popSaveMovie: false});
-        return false;
-    }
-
-    //!why loop isnt returning?!
-    deleteDuplicateTitle(textCleanedInfo) {
-        let copy = false;
-        let tempMovieList = [...this.state.movieList];
-        for (let i = 0; i < tempMovieList.length; i++) {
-            if (textCleanedInfo['Title'] === tempMovieList[0]['Title']) {
-                // this.setState({ :  });
-                return;
-            }
-        }
-        //!why loop isnt returning?!
-        console.log('copy', copy)
-
-        return textCleanedInfo;
-
-    }
+  
+   
 
     getMovieIndex = (movieID) => {
         return this
@@ -119,16 +100,34 @@ class App extends Component {
                 return;
             };
 
-            if (value === 'Year' && (textCleanedInfo[value] > new Date().getFullYear() || textCleanedInfo[value] < 1920)) {
-                alert('please enter a valid date')
+            if (value === 'Year' && (textCleanedInfo[value] > new Date().getFullYear() || textCleanedInfo[value] < 1920 || value.match(/[0-9]/g))) {
+                alert('please enter a valid date');
+                return;
             };
         };
 
         const approvedTextInfo = this.deleteDuplicateTitle(textCleanedInfo)
 
-        this.setState({popSaveMovie: true, approvedTextInfo})
+        // this.setState({popSaveMovie: true, approvedTextInfo})
 
     };
+
+     //!why loop isnt returning?!
+     deleteDuplicateTitle(textCleanedInfo) {
+        let copy = false;
+        let tempMovieList = [...this.state.movieList];
+        for (let i = 0; i < tempMovieList.length; i++) {
+            if (textCleanedInfo['Title'] === tempMovieList[0]['Title']) {
+                // this.setState({ :  });
+                return;
+            }
+        }
+        //!why loop isnt returning?!
+        console.log('copy', copy)
+
+        return textCleanedInfo;
+
+    }
 
     saveEditedInfo = () => {
         if (!this.state.approvedTextInfo) {

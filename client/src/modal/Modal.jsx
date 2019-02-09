@@ -12,7 +12,7 @@ class Modal extends Component {
       }
 
 
-    cleanUpEditeText = (e, editedText, key) => {
+    cleanUpEditedText = (e, editedText, key) => {
         if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
             let verifiedText = e
                 .currentTarget
@@ -24,15 +24,16 @@ class Modal extends Component {
                 .join(' ');
 
             editedText[key] = verifiedText || editedText[key];
-            
         };
-
+    
         this.setState((prevState) => ({
                 [key]: editedText[key],
             ...prevState.state
             })
         );
     };
+
+
 
 
     renderMovieInfo = () => {
@@ -64,7 +65,7 @@ class Modal extends Component {
                                 type="text"
                                 id="fields"
                                 placeholder={`Edit ${key}`}
-                                onChange={(e) => this.cleanUpEditeText(e, editedText, key)}/>
+                                onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
 
                         </div>
                     )
