@@ -4,12 +4,9 @@ import SearchBar from './search/SearchBar';
 import MenuBar from './menuBar/MenuBar';
 import Modal from './modal/Modal';
 import Home from './home/Home';
-import PopUp from './popUp/PopUp';
-import SavePopUp from './popUp/SavePopUp';
+import QuestionPopUp from './popUp/QuestionPopUp';
 import AlertPopUp from './popUp/AlertPopUp';
 import './App.css';
-
-// const apiKey = '3c722a44';
 
 class App extends Component {
 
@@ -18,25 +15,23 @@ class App extends Component {
         isModalOpen: false,
         isPopUpOpen: false,
         movieInModal: {},
-        imdbDelete: '',
-        popApprove: false,
-        approvedTextInfo: {},
-        popSaveMovie: false,
+        saveOrDeletePopUp: null,
         isAlert: false,
-        alertType: ''
+        deleteIdOrVerifiedInfo: '',
+        alertType: '',
     }
 
     //render movie list at startup
     componentDidMount() {
-        this.renderNewRelease();
+        this.renderOnStartUp();
     }
 
-    //open & close Modal
     toggleModal = (movieID) => {
         this.setState({
             isModalOpen: !this.state.isModalOpen
         }, () => this.getFullMovieInfo(movieID));
-    }
+    };
+
 
     toggleAlert = (alertType) => {
         this.setState({
@@ -44,74 +39,68 @@ class App extends Component {
             alertType: alertType
         });
         return;
-    }
+    };
 
-    //fetch movie list AJAX
-    renderNewRelease = async() => {
+    //fetch first movie list AJAX
+    renderOnStartUp = async() => {
         let data = {};
 
         await Axios
             .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor&tomatoes=true`)
             .then(res => {
                 data = res.data.Search;
-                data = this.deleteDuplicatesImdb(data)
+                data = this.deleteDuplicatesImdb(data);
 
             })
             .catch(err => console.log(err));
 
         this.setState({movieList: data});
-    }
+    };
 
     //delete duplicates from fetched movie list
     deleteDuplicatesImdb = (arr) => {
         const isEqual = (a, b) => a.imdbID === b.imdbID;
         return arr.filter(candidate => candidate === arr.find(item => isEqual(item, candidate)))
-    }
+    };
 
     getMovieIndex = (movieID) => {
         return this
             .state
             .movieList
             .findIndex(movie => movie.imdbID === movieID)
-    }
+    };
 
-    togglePopUp = (imdbDelete) => {
+    togglePopUp = (deleteIdOrVerifiedInfo, saveOrDelete) => {
         this.setState({
             isPopUpOpen: !this.state.isPopUpOpen,
-            imdbDelete
+            deleteIdOrVerifiedInfo,
+            saveOrDelete
         });
         return;
     }
 
     //delete movies from list - User Choice
-    deleteMovie = (imdbDelete) => {
+    deleteMovie = () => {
+        const deleteId = this.state.deleteIdOrVerifiedInfo;
+        // const delteID = this.state.imdbDelete
         const movieListCopy = [...this.state.movieList];
-        const movieIndex = this.getMovieIndex(imdbDelete)
+        const movieIndex = this.getMovieIndex(deleteId)
         movieListCopy.splice(movieIndex, 1);
         this.setState({
             movieList: movieListCopy,
             isPopUpOpen: !this.state.isPopUpOpen
         });
-    }
-
-    toggleSavePopUp = (approvedTextInfo) => {
-        this.setState({
-            popSaveMovie: !this.state.popSaveMovie,
-            approvedTextInfo
-        });
-        // return;
-    }
+    };
 
     saveEditedInfo = () => {
-
-        const approvedTextInfo = this.state.approvedTextInfo;
+        const approvedTextInfo = this.state.deleteIdOrVerifiedInfo;
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
         movieListCopy.splice(movieIndex, 1, approvedTextInfo);
         this.setState({
             movieList: movieListCopy,
             isModalOpen: !this.state.isModalOpen,
-            popSaveMovie: false
+            isPopUpOpen: !this.state.isPopUpOpen,
         });
     }
 
@@ -131,7 +120,6 @@ class App extends Component {
             await Axios
                 .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
                 .then(res => {
-                    // res = res.data;
                     data = {
                         imdbID: res.data.imdbID,
                         Title: res.data.Title,
@@ -139,17 +127,13 @@ class App extends Component {
                         RunTime: res.data.Runtime,
                         Genre: res.data.Genre,
                         Director: res.data.Director,
-                        // plot: res.data.Plot,
                         Poster: res.data.Poster
                     }
                 })
                 .then(() => this.setState({movieInModal: data}))
                 .catch(err => console.log(err));
-        }
-
-    }
-
-    //!turn the keys in the object to lowercase
+        };
+    };
 
     render() {
         return (
@@ -160,32 +144,25 @@ class App extends Component {
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
                     togglePopUp={this.togglePopUp}
-                    movieList={this.state.movieList}/> {this.state.isModalOpen
+                    movieList={this.state.movieList}/> 
+                    
+                    {this.state.isModalOpen
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
                             togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
                             verifyEditedInfo={this.verifyEditedInfo}
-                            toggleSavePopUp={this.toggleSavePopUp}
                             toggleAlert={this.toggleAlert}/>
                     : null}
+
                 {this.state.isPopUpOpen
-                    ? <PopUp
+                    ? <QuestionPopUp
                             togglePopUp={this.togglePopUp}
-                            popUDenied={this.popUDenied}
-                            imdbDelete={this.state.imdbDelete}
                             deleteMovie={this.deleteMovie}
-                            approveSaveMovie={this.state.approveSaveMovie}
-                            approvedTextInfo={this.state.approvedTextInfo}/>
-
-                    : null}
-
-                {this.state.popSaveMovie
-                    ? <SavePopUp
-                            popSaveMovie={this.state.popSaveMovie}
-                            toggleSavePopUp={this.toggleSavePopUp}
+                            saveOrDelete={this.state.saveOrDelete}
                             saveEditedInfo={this.saveEditedInfo}/>
+
                     : null}
 
                 {this.state.isAlert

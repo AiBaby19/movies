@@ -1,30 +1,26 @@
-import React, {Component} from 'react';
+import React from 'react';
 import SingleMovie from './singleMovie';
 import './movieList.css'
 
-class MovieList extends Component {
-    state = {}
-
-    renderMoviesList = () => {
-        return this
-            .props
+export default(props) => {
+    
+    const renderMoviesList = () => {
+        return props
             .movieList
-            .map(({Title, Poster, imdbID, index}) => {
-                return (
-                    <SingleMovie key={imdbID} togglePopUp={this.props.togglePopUp} toggleModal={this.props.toggleModal} imdbID={imdbID} title={Title} poster={Poster}/>
-                )
+            .map(({Title, Poster, imdbID}) => {
+                return (<SingleMovie
+                    key={imdbID}
+                    togglePopUp={props.togglePopUp}
+                    toggleModal={props.toggleModal}
+                    imdbID={imdbID}
+                    title={Title}
+                    poster={Poster}/>)
             });
-    }
+    };
 
-    render() {
-        return (
-            <React.Fragment>
-                <div className="movie-list ">
-                    {this.renderMoviesList()}
-                </div>
-            </React.Fragment>
-        );
-    }
-}
-
-export default MovieList;
+    return (
+        <div className="movie-list ">
+            {renderMoviesList()}
+        </div>
+    );
+};
