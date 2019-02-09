@@ -50,7 +50,6 @@ class App extends Component {
             .get(`https://www.omdbapi.com/?apikey=3c722a44&s=thor`)
             .then(res => {
                 data = res.data.Search;
-                console.log(data)
                 this.renderMovieList(data)
 
             })
@@ -99,7 +98,14 @@ class App extends Component {
     };
 
     saveEditedInfo = () => {
+        // console.log('save function')
+        // poster={Poster === 'N/A' ? '/resources/img/Blank.png': Poster}
         const approvedTextInfo = this.state.deleteIdOrVerifiedInfo;
+        if(approvedTextInfo['Poster'] === "N/A") {
+            approvedTextInfo['Poster'] = '/resources/img/Blank.png'
+        }
+        console.log('approvedTextInfo', approvedTextInfo)
+
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
         movieListCopy.splice(movieIndex, 1, approvedTextInfo);
@@ -135,6 +141,9 @@ class App extends Component {
                         Director: res.data.Director,
                         Poster: res.data.Poster
                     }
+                    // if(data.Poster === "N/A") {
+                    //     data.Poster = 
+                    // }
                 })
                 .then(() => this.setState({movieInModal: data}))
                 .catch(err => console.log(err));

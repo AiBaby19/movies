@@ -22,7 +22,6 @@ class SearchBar extends Component {
     }
 
     render() {
-        console.log(this.state.movieTitle)
         return (
                 <div className="container">
                     <div className="wrapper">
