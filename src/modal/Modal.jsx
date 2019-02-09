@@ -18,8 +18,8 @@ class Modal extends Component {
         let editedText = {}
         // console.log(this.props.movieInModal)
 
-        this.props.movieInModal.Poster === "N/A" ? editedText.Poster ='/resources/img/Blank.png' : editedText.Poster = this.props.movieInModal.Poster
-        ;
+        // this.props.movieInModal.Poster === "N/A" ? editedText.Poster ='/resources/img/blank.png' : editedText.Poster = this.props.movieInModal.Poster
+        // ;
         console.log(this.props.movieInModal)
         return Object
             .keys(this.props.movieInModal)
