@@ -4,13 +4,16 @@ import './home.css'
 
 export default(props) => {
     return (
+
         <div className="home-container">
-            {/* <h1 className="home-headline">New Releases</h1> */}
-            <MovieList
-                toggleModal={props.toggleModal}
-                movieList={props.movieList}
-                togglePopUp={props.togglePopUp}
-                fullMovieInfo={props.fullMovieInfo}/>
+            <div className="opacity">
+                <h1 className="home-headline">Find A Movie</h1>
+                <MovieList
+                    toggleModal={props.toggleModal}
+                    movieList={props.movieList}
+                    togglePopUp={props.togglePopUp}
+                    fullMovieInfo={props.fullMovieInfo}/>
+            </div>
         </div>
     );
 };
