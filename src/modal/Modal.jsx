@@ -53,7 +53,8 @@ class Modal extends Component {
             let verifiedText = e
                 .currentTarget
                 .value
-                .replace(/[^a-z0-9]/gmi, " ").replace(/^\s+|\s+$|\s+(?=\s)/g, "")
+                .replace(/[^a-z0-9]/gmi, " ")
+                .replace(/^\s+|\s+$|\s+(?=\s)/g, "")
                 .toLowerCase()
                 .split(' ')
                 .map((letter) => letter.charAt(0).toUpperCase() + letter.substring(1))
@@ -104,8 +105,6 @@ class Modal extends Component {
         let tempMovieList = this.props.movieList;
 
         for (let i = 0; i < tempMovieList.length; i++) {
-            // console.log(this.state['Title'])
-            // console.log(tempMovieList[0]['Title'])
 
             if (this.state['imdbID'] !== tempMovieList[0]['imdbID'] && this.state['Title'] === tempMovieList[0]['Title']) {
                 this
