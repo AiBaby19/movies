@@ -17,9 +17,13 @@
     justify-content: center;
     padding: 10px 0;
     width: auto;
+    width: 100%;
+}
+
+.inner-search-div {
+    display: flex;
     width: 90%;
-    /* background-color: green; */
-    border: 2px green solid;
+    margin: 0 auto;
 }
 
 .searchInput {
@@ -28,7 +32,7 @@
     width: 85%;
     height: 40px;
     border: none;
-    padding-left: 15px;
+    padding: 0 10px;
 }
 
 .btn-search-div {
@@ -37,8 +41,8 @@
 }
 
 .btn {
-    min-width: 120px;
-    width: 15%;
+    min-width: 150px;
+    width: 100%;
     height: 40px;
     background-color: #90E04A;
     color: white;
@@ -46,7 +50,6 @@
     border: none;
     font-family: toma_sansregular;
 }
-
 .btn:hover {
     background-color: rgb(183, 245, 129);
     color: black;
@@ -59,11 +62,13 @@
     display: flex;
     align-items: center;
 }
-
-
 @media only screen and (max-width:670px) {
     .container {
         width: 100%;
         margin-left: 0;
+    }
+
+    .btn {
+        min-width: 100px;
     }
 }

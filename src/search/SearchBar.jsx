@@ -25,13 +25,16 @@ class SearchBar extends Component {
         return (
             <div className="container">
                 <div className="wrapper">
+                <div className="inner-search-div">
                     <input
                         className="searchInput"
                         type="text"
                         placeholder="Search A Movie..."
                         onChange={(e) => this.setState({movieTitle: e.currentTarget.value})}/>
-                    <div className="btn-search-div">
-                        <button className="btn" onClick={() => this.getMovieData()}>SEARCH</button>
+                    
+                        <div className="btn-search-div">
+                            <button className="btn" onClick={() => this.getMovieData()}>SEARCH</button>
+                        </div>
                     </div>
                 </div>
             </div>
