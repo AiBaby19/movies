@@ -1,3 +1,11 @@
+
+.movie-list-parent {
+  display: flex;
+  margin: 0 auto;
+  width: auto;
+  width: 90%;
+}
+
 .movie-list {
   display: flex;
   flex-direction: row;
@@ -5,8 +13,7 @@
   margin: 0 auto;
   align-content: space-between; 
   flex-wrap: wrap;
-  max-width: 90%;
-  width: auto;
+  /* width: auto; */
   padding: 10px;
   margin-top: 30px;
 }
