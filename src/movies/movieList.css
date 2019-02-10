@@ -4,6 +4,8 @@
   margin: 0 auto;
   width: auto;
   width: 90%;
+  border: 2px yellow solid;
+
 }
 
 .movie-list {

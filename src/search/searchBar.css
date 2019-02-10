@@ -19,10 +19,12 @@
     width: auto;
     width: 90%;
     /* background-color: green; */
+    border: 2px green solid;
 }
 
 .searchInput {
     display: flex;
+    justify-content: flex-start;
     width: 85%;
     height: 40px;
     border: none;
