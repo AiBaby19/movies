@@ -19,6 +19,7 @@ class App extends Component {
         isAlert: false,
         deleteIdOrVerifiedInfo: '',
         alertType: '',
+        newMovieObj: {}
     }
 
     //render movie list at startup
@@ -26,10 +27,28 @@ class App extends Component {
         this.fetchFirstList();
     }
 
-    toggleModal = (movieID) => {
-        this.getFullMovieInfo(movieID);
-    };
+    toggleModal = (EditOrAddMovie) => {
 
+        //!!add ID
+        if (EditOrAddMovie === 'addNewMovie') {
+            let newMovieObj = {
+                Title: "",
+                imdbID: "12345",
+                Year: "",
+                RunTime: "",
+                Genre: "",
+                Director: "",
+                Poster: "/blank.png"
+            }
+            this.setState({movieInModal: newMovieObj, isModalOpen: true});
+            return
+
+        } else {
+            this.getFullMovieInfo(EditOrAddMovie);
+            return;
+        }
+
+    };
 
     toggleAlert = (alertType) => {
         this.setState({
@@ -51,9 +70,7 @@ class App extends Component {
 
             })
             .catch(err => console.log(err));
-        }
-
-
+    }
 
     renderMovieList = (data) => {
         data = this.deleteDuplicatesImdb(data);
@@ -96,7 +113,7 @@ class App extends Component {
 
     saveEditedInfo = () => {
         const approvedTextInfo = this.state.deleteIdOrVerifiedInfo;
-        if(approvedTextInfo['Poster'] === "N/A") {
+        if (approvedTextInfo['Poster'] === "N/A") {
             approvedTextInfo['Poster'] = '/blank.png'
         }
         console.log('approvedTextInfo', approvedTextInfo)
@@ -107,28 +124,28 @@ class App extends Component {
         this.setState({
             movieList: movieListCopy,
             isModalOpen: false,
-            isPopUpOpen: !this.state.isPopUpOpen,
+            isPopUpOpen: !this.state.isPopUpOpen
         });
-        
+
     }
 
     //get full movie info to modal
     getFullMovieInfo = async(movieID) => {
+        // console.log('getfullMovieInfo')
+        let data = {};
 
         if (this.state.isModalOpen) {
-            this.setState({ isModalOpen: false });
+            this.setState({isModalOpen: false});
             return;
         }
 
-        let data = {};
         const movieIndex = this.getMovieIndex(movieID)
 
         if (Object.keys(this.state.movieList[movieIndex]).length > 5) {
-            this.setState({movieInModal: this.state.movieList[movieIndex],
-                isModalOpen: true
-            });
+            this.setState({movieInModal: this.state.movieList[movieIndex], isModalOpen: true});
 
         } else {
+            console.log('axios')
             await Axios
                 .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
                 .then(res => {
@@ -141,14 +158,11 @@ class App extends Component {
                         Director: res.data.Director,
                         Poster: res.data.Poster
                     }
-                    if(data['Poster'] === "N/A") {
+                    if (data['Poster'] === "N/A") {
                         data['Poster'] = '/blank.png'
                     }
                 })
-                .then(() => this.setState({
-                    movieInModal: data,
-                    isModalOpen: true
-                }))
+                .then(() => this.setState({movieInModal: data, isModalOpen: true}))
                 .catch(err => console.log(err));
         };
     };
@@ -157,21 +171,22 @@ class App extends Component {
         return (
             <div>
                 <MenuBar/>
-                <SearchBar renderMovieList={this.renderMovieList}/>
+                <SearchBar
+                    renderMovieList={this.renderMovieList}
+                    toggleModal={this.toggleModal}/>
                 <Home
                     toggleModal={this.toggleModal}
                     deleteMovie={this.deleteMovie}
                     togglePopUp={this.togglePopUp}
-                    movieList={this.state.movieList}/> 
-                    
-                    {this.state.isModalOpen
+                    movieList={this.state.movieList}/> {this.state.isModalOpen
                     ? <Modal
                             movieInModal={this.state.movieInModal}
                             toggleModal={this.toggleModal}
                             togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
                             verifyEditedInfo={this.verifyEditedInfo}
-                            toggleAlert={this.toggleAlert}/>
+                            toggleAlert={this.toggleAlert}
+                            newMovieObj={this.state.newMovieObj}/>
                     : null}
 
                 {this.state.isPopUpOpen
@@ -184,9 +199,7 @@ class App extends Component {
                     : null}
 
                 {this.state.isAlert
-                    ? <AlertPopUp 
-                            toggleAlert={this.toggleAlert} 
-                            alertType={this.state.alertType}/>
+                    ? <AlertPopUp toggleAlert={this.toggleAlert} alertType={this.state.alertType}/>
                     : null}
             </div>
         );
