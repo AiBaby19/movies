@@ -14,39 +14,38 @@ class Modal extends Component {
     //render each movie filed and add an onchange event to each field
     renderMovieInfo = () => {
         let editedText = {};
-   
-            return Object
-                .keys(this.props.movieInModal)
-                .map(key => {
-                    if (key === 'imdbID' || key === 'Poster') {
-                        return;
-                    } else {
-                        editedText[key] = this.props.movieInModal[key];
 
-                        //hard coded and not rendered to text & cannot be edited
-                        editedText.imdbID = this.props.movieInModal.imdbID;
-                        editedText.Poster = this.props.movieInModal.Poster;
+        return Object
+            .keys(this.props.movieInModal)
+            .map(key => {
+                if (key === 'imdbID' || key === 'Poster') {
+                    return;
+                } else {
+                    editedText[key] = this.props.movieInModal[key];
 
-                        return (
-                            <div key={key} className="movie-info">
-                                <b
-                                    style={{
-                                    textTransform: 'uppercase'
-                                }}>{key}</b>: {this.state[key]
-                                    ? this.state[key]
-                                    : this.props.movieInModal[key]}
-                                <input
-                                    type="text"
-                                    id="fields"
-                                    placeholder={`Edit ${key}`}
-                                    onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
-                            </div>
-                        )
-                    };
-                });
-            // }
-        };
-    
+                    //hard coded and not rendered to text & cannot be edited
+                    editedText.imdbID = this.props.movieInModal.imdbID;
+                    editedText.Poster = this.props.movieInModal.Poster;
+
+                    return (
+                        <div key={key} className="movie-info">
+                            <b
+                                style={{
+                                textTransform: 'uppercase'
+                            }}>{key}</b>: {this.state[key]
+                                ? this.state[key]
+                                : this.props.movieInModal[key]}
+                            <input
+                                type="text"
+                                id="fields"
+                                placeholder={`Edit ${key}`}
+                                onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
+                        </div>
+                    )
+                };
+            });
+        // }
+    };
 
     //STARTING EDITED INFO VERIFYING SEQUENCE
     cleanUpEditedText = (e, editedText, key) => {
@@ -75,7 +74,7 @@ class Modal extends Component {
         }
 
         for (let value in cleanText) {
-            if (cleanText[value].match(/^\s+$/)) {
+            if (cleanText[value].match(/^\s+$/) || cleanText[value] === "") {
                 this
                     .props
                     .toggleAlert('please dont leave empty fields.');
@@ -89,14 +88,14 @@ class Modal extends Component {
                         .toggleAlert('Please provide a reasonable year.');
                     return;
                 };
+            };
 
-                if (cleanText[value].match(/[a-zA-Z]/g)) {
+            if ((value === 'Year' || value === 'RunTime') && cleanText[value].match(/[a-zA-Z]/g)) {
                     this
                         .props
-                        .toggleAlert('Use numbers for the Year.');
-                    return;
-                };
-            };
+                        .toggleAlert(`Use numbers for the ${value}.`);
+                    return;                
+            } 
         };
         this.findDuplicateTitle();
     };
