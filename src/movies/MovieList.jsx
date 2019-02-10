@@ -21,10 +21,10 @@ export default(props) => {
     };
 
     return (
-        <div className="movie-list-parent">
-            <div className="movie-list ">
-                {renderMoviesList()}
+            <div className="movie-list-parent">
+                <div className="movie-list ">
+                    {renderMoviesList()}
+                </div>
             </div>
-        </div>
     );
 };

@@ -1,6 +1,7 @@
 
 .movie-list-parent {
     display: flex;
+    /* flex-direction: row; */
     margin: 0 auto;
     width: auto;
     max-width: 90%;

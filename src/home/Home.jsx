@@ -9,7 +9,9 @@ export default(props) => {
             <div className="opacity">
                 <div className="home-headline-div">
                     <h1 className="home-headline">Find A Movie</h1>
+                    <button className="add-movie-btn btn home-headline">ADD MOVIE</button>
                 </div>
+                
 
                 <MovieList
                     toggleModal={props.toggleModal}

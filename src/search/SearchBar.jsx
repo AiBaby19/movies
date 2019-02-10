@@ -29,7 +29,7 @@ class SearchBar extends Component {
                     <input
                         className="searchInput"
                         type="text"
-                        placeholder="Search A Movie..."
+                        placeholder="Search A Movie Online..."
                         onChange={(e) => this.setState({movieTitle: e.currentTarget.value})}/>
                     
                         <div className="btn-search-div">
