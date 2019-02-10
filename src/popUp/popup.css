@@ -12,13 +12,14 @@
     border: grey 1px solid;
     background-color: rgb(255, 255, 255);
     height: 150px;
-    width: 320px;
+    width: 300px;
     color: black;
+    padding: 0 5px;
 }
 
 .btn-div {
     display: flex;
-    margin-top: 10px;
+    margin-top: 15px;
     justify-content: space-around;
 }
 
