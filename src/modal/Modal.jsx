@@ -6,46 +6,47 @@ class Modal extends Component {
     state = {};
 
     componentDidMount() {
-            this.setState({
-                ...this.props.movieInModal
-            })
+        this.setState({
+            ...this.props.movieInModal
+        })
     }
 
     //render each movie filed and add an onchange event to each field
     renderMovieInfo = () => {
-        let editedText = {}
-        // this.setState({ editedText });
-        return Object
-            .keys(this.props.movieInModal)
-            .map(key => {
-                if (key === 'imdbID' || key === 'Poster') {
-                    return;
-                } else {
-                    editedText[key] = this.props.movieInModal[key];
+        let editedText = {};
+   
+            return Object
+                .keys(this.props.movieInModal)
+                .map(key => {
+                    if (key === 'imdbID' || key === 'Poster') {
+                        return;
+                    } else {
+                        editedText[key] = this.props.movieInModal[key];
 
-                    //hard coded and not rendered to text & cannot be edited
-                    editedText.imdbID = this.props.movieInModal.imdbID;
-                    
+                        //hard coded and not rendered to text & cannot be edited
+                        editedText.imdbID = this.props.movieInModal.imdbID;
+                        editedText.Poster = this.props.movieInModal.Poster;
 
-
-                    return (
-                        <div key={key} className="movie-info">
-                            <b
-                                style={{
-                                textTransform: 'uppercase'
-                            }}>{key}</b>: {this.state[key]
-                                ? this.state[key]
-                                : this.props.movieInModal[key]}
-                            <input
-                                type="text"
-                                id="fields"
-                                placeholder={`Edit ${key}`}
-                                onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
-                        </div>
-                    )
-                };
-            });
-    };
+                        return (
+                            <div key={key} className="movie-info">
+                                <b
+                                    style={{
+                                    textTransform: 'uppercase'
+                                }}>{key}</b>: {this.state[key]
+                                    ? this.state[key]
+                                    : this.props.movieInModal[key]}
+                                <input
+                                    type="text"
+                                    id="fields"
+                                    placeholder={`Edit ${key}`}
+                                    onChange={(e) => this.cleanUpEditedText(e, editedText, key)}/>
+                            </div>
+                        )
+                    };
+                });
+            // }
+        };
+    
 
     //STARTING EDITED INFO VERIFYING SEQUENCE
     cleanUpEditedText = (e, editedText, key) => {
@@ -116,8 +117,6 @@ class Modal extends Component {
             .props
             .togglePopUp(this.state, 'save');
     }
-
- 
 
     render() {
         const movie = this.props.movieInModal

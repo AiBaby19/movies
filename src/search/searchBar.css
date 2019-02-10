@@ -18,12 +18,16 @@
     padding: 10px 0;
     width: auto;
     width: 100%;
+        /* border: 1px solid green; */
+
 }
 
 .inner-search-div {
     display: flex;
     width: 90%;
     margin: 0 auto;
+    /* border: 1px solid green; */
+
 }
 
 .searchInput {
@@ -38,6 +42,7 @@
 .btn-search-div {
     display: flex;
     justify-content: flex-end;
+    height: 40px;
 }
 
 .btn {
@@ -61,13 +66,22 @@
     color: black;
 }
 
-/* .filter {
-    margin: 0 auto;
-    color: white;
-    font-size: 22px;
+.add-movie-btn {
+    background-color: white;
+    color: #90E04A;
     display: flex;
-    align-items: center;
-} */
+    justify-content: center;
+    margin-left: 15px;
+    width: auto;
+    font-weight: 700;
+    border-radius: 2px;
+}
+
+.add-movie-btn:hover {
+    background-color: white;
+    color: #FC4E5C;
+}
+
 @media only screen and (max-width:670px) {
     .container {
         width: 100%;
