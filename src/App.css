@@ -25,6 +25,6 @@ button:hover {
     font-style: normal;
 }
 
-@media only screen and (max-width:800px) {
-   /* height: 40px; */
-}
+/* @media only screen and (max-width:800px) {
+   height: 40px;
+} */
