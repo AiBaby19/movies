@@ -106,13 +106,15 @@ class App extends Component {
         movieListCopy.splice(movieIndex, 1, approvedTextInfo);
         this.setState({
             movieList: movieListCopy,
-            isModalOpen: !this.state.isModalOpen,
+            isModalOpen: false,
             isPopUpOpen: !this.state.isPopUpOpen,
         });
+        
     }
 
     //get full movie info to modal
     getFullMovieInfo = async(movieID) => {
+
         if (this.state.isModalOpen) {
             this.setState({ isModalOpen: false });
             return;
@@ -122,7 +124,9 @@ class App extends Component {
         const movieIndex = this.getMovieIndex(movieID)
 
         if (Object.keys(this.state.movieList[movieIndex]).length > 5) {
-            this.setState({movieInModal: this.state.movieList[movieIndex]});
+            this.setState({movieInModal: this.state.movieList[movieIndex],
+                isModalOpen: true
+            });
 
         } else {
             await Axios
