@@ -10,7 +10,7 @@ body {
     font-family: toma_sansregular;
     font-weight: 200;
     color: white;
-    overflow: hidden;
+    /* overflow: hidden; */
 
 }
 button:hover {

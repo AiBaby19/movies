@@ -10,7 +10,7 @@ class Modal extends Component {
             this.setState({
                 ...this.props.movieInModal
             })
-        }, 500)
+        }, 400)
     }
 
     //render each movie filed and add an onchange event to each field
