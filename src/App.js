@@ -19,7 +19,7 @@ class App extends Component {
         isAlert: false,
         deleteIdOrVerifiedInfo: '',
         alertType: '',
-        newMovieObj: {}
+        addMovieID: 0,
     }
 
     //render movie list at startup
@@ -33,14 +33,14 @@ class App extends Component {
         if (EditOrAddMovie === 'addNewMovie') {
             let newMovieObj = {
                 Title: "",
-                imdbID: "12345",
+                imdbID: "MovieID-" + this.state.addMovieID,
                 Year: "",
                 RunTime: "",
                 Genre: "",
                 Director: "",
                 Poster: "/blank.png"
             }
-            this.setState({movieInModal: newMovieObj, isModalOpen: true});
+            this.setState({movieInModal: newMovieObj, addMovieID: +1, isModalOpen: true});
             return
 
         } else {
@@ -116,7 +116,6 @@ class App extends Component {
         if (approvedTextInfo['Poster'] === "N/A") {
             approvedTextInfo['Poster'] = '/blank.png'
         }
-        console.log('approvedTextInfo', approvedTextInfo)
 
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
@@ -124,7 +123,8 @@ class App extends Component {
         this.setState({
             movieList: movieListCopy,
             isModalOpen: false,
-            isPopUpOpen: !this.state.isPopUpOpen
+            isPopUpOpen: !this.state.isPopUpOpen,
+            movieInModal: {}
         });
 
     }
@@ -145,7 +145,6 @@ class App extends Component {
             this.setState({movieInModal: this.state.movieList[movieIndex], isModalOpen: true});
 
         } else {
-            console.log('axios')
             await Axios
                 .get(`https://www.omdbapi.com/?apikey=3c722a44&i=${movieID}&Runtime`)
                 .then(res => {
@@ -185,8 +184,7 @@ class App extends Component {
                             togglePopUp={this.togglePopUp}
                             movieList={this.state.movieList}
                             verifyEditedInfo={this.verifyEditedInfo}
-                            toggleAlert={this.toggleAlert}
-                            newMovieObj={this.state.newMovieObj}/>
+                            toggleAlert={this.toggleAlert}/>
                     : null}
 
                 {this.state.isPopUpOpen
