@@ -1,24 +1,21 @@
-
 .movie-list-parent {
     display: flex;
-    /* flex-direction: row; */
     margin: 0 auto;
     width: auto;
     max-width: 90%;
-
 }
 
 .movie-list {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    /* justify-content: space-between; */
     margin: 0 auto;
     align-content: space-between;
     flex-wrap: wrap;
     padding: 10 0;
     margin-top: 30px;
 }
+
 @media only screen and (max-width:1200px) {
     .movie-list {
         justify-content: center;

@@ -19,7 +19,7 @@ class App extends Component {
         isAlert: false,
         deleteIdOrVerifiedInfo: '',
         alertType: '',
-        addMovieID: 0,
+        addMovieID: 0
     }
 
     //render movie list at startup
@@ -40,7 +40,11 @@ class App extends Component {
                 Director: "",
                 Poster: "/blank.png"
             }
-            this.setState({movieInModal: newMovieObj, addMovieID: +1, isModalOpen: true});
+            this.setState({
+                movieInModal: newMovieObj,
+                addMovieID: + 1,
+                isModalOpen: true
+            });
             return
 
         } else {
@@ -131,7 +135,6 @@ class App extends Component {
 
     //get full movie info to modal
     getFullMovieInfo = async(movieID) => {
-        // console.log('getfullMovieInfo')
         let data = {};
 
         if (this.state.isModalOpen) {
@@ -160,6 +163,9 @@ class App extends Component {
                     if (data['Poster'] === "N/A") {
                         data['Poster'] = '/blank.png'
                     }
+
+                    data['RunTime'] = data['RunTime'].replace(/[a-zA-Z]/g, '')
+
                 })
                 .then(() => this.setState({movieInModal: data, isModalOpen: true}))
                 .catch(err => console.log(err));

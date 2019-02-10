@@ -69,34 +69,33 @@ class Modal extends Component {
     };
 
     verifyEditedInfo = () => {
-        const cleanText = {
+        let cleanText = {
             ...this.state
         }
+
+        if (cleanText['Year'] > new Date().getFullYear() || cleanText['Year'] < 1920) {
+            this
+                .props
+                .toggleAlert('Please provide a reasonable year.');
+            return;
+        };
 
         for (let value in cleanText) {
             if (cleanText[value].match(/^\s+$/) || cleanText[value] === "") {
                 this
                     .props
-                    .toggleAlert('please dont leave empty fields.');
+                    .toggleAlert(`Please dont leave ${value.toLowerCase()} empty.`);
                 return;
             };
 
-            if (value === 'Year') {
-                if (cleanText[value] > new Date().getFullYear() || cleanText[value] < 1920) {
-                    this
-                        .props
-                        .toggleAlert('Please provide a reasonable year.');
-                    return;
-                };
-            };
-
             if ((value === 'Year' || value === 'RunTime') && cleanText[value].match(/[a-zA-Z]/g)) {
-                    this
-                        .props
-                        .toggleAlert(`Use numbers for the ${value}.`);
-                    return;                
-            } 
+                this
+                    .props
+                    .toggleAlert(`Use only numbers for the ${value.toLowerCase()}.`);
+                return;
+            };
         };
+
         this.findDuplicateTitle();
     };
 

@@ -21,14 +21,6 @@
     border: none;
 }
 
-
-
-.opacity {
-    /* background-color: red; */
-    /* display: block;
-  position: absolute;
-  z-index: 1000; */
-}
 @media only screen and (max-width:670px) {
     .home-headline {
         display: none;
