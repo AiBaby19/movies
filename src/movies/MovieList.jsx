@@ -3,7 +3,7 @@ import SingleMovie from './singleMovie';
 import './movieList.css'
 
 export default(props) => {
-    
+
     const renderMoviesList = () => {
         return props
             .movieList
@@ -14,13 +14,17 @@ export default(props) => {
                     toggleModal={props.toggleModal}
                     imdbID={imdbID}
                     title={Title}
-                    poster={Poster === 'N/A' ? '/blank.png': Poster}/>)
+                    poster={Poster === 'N/A'
+                    ? '/blank.png'
+                    : Poster}/>)
             });
     };
 
     return (
-        <div className="movie-list ">
-            {renderMoviesList()}
+        <div className="movie-list-parent">
+            <div className="movie-list ">
+                {renderMoviesList()}
+            </div>
         </div>
     );
 };

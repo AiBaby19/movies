@@ -6,21 +6,15 @@ class Modal extends Component {
     state = {};
 
     componentDidMount() {
-        setTimeout(() => {
             this.setState({
                 ...this.props.movieInModal
             })
-        }, 500)
     }
 
     //render each movie filed and add an onchange event to each field
     renderMovieInfo = () => {
         let editedText = {}
-        // console.log(this.props.movieInModal)
-
-        // this.props.movieInModal.Poster === "N/A" ? editedText.Poster ='/resources/img/blank.png' : editedText.Poster = this.props.movieInModal.Poster
-        // ;
-        console.log(this.props.movieInModal)
+        // this.setState({ editedText });
         return Object
             .keys(this.props.movieInModal)
             .map(key => {
@@ -55,7 +49,6 @@ class Modal extends Component {
 
     //STARTING EDITED INFO VERIFYING SEQUENCE
     cleanUpEditedText = (e, editedText, key) => {
-        console.log(this.props.editedText)
         if (key !== 'Poster' || key !== 'imdbID' || key !== 'Year') {
             let verifiedText = e
                 .currentTarget

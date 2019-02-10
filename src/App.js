@@ -27,9 +27,7 @@ class App extends Component {
     }
 
     toggleModal = (movieID) => {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        }, () => this.getFullMovieInfo(movieID));
+        this.getFullMovieInfo(movieID);
     };
 
 
@@ -42,7 +40,6 @@ class App extends Component {
     };
 
     //fetch first movie list AJAX
-
     fetchFirstList = async() => {
         let data = {};
 
@@ -116,7 +113,8 @@ class App extends Component {
 
     //get full movie info to modal
     getFullMovieInfo = async(movieID) => {
-        if (!this.state.isModalOpen) {
+        if (this.state.isModalOpen) {
+            this.setState({ isModalOpen: false });
             return;
         }
 
@@ -143,7 +141,10 @@ class App extends Component {
                         data['Poster'] = '/blank.png'
                     }
                 })
-                .then(() => this.setState({movieInModal: data}))
+                .then(() => this.setState({
+                    movieInModal: data,
+                    isModalOpen: true
+                }))
                 .catch(err => console.log(err));
         };
     };
