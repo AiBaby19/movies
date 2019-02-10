@@ -33,7 +33,7 @@ class SearchBar extends Component {
                         onChange={(e) => this.setState({movieTitle: e.currentTarget.value})}/>
                     
                         <div className="btn-search-div">
-                            <button className="btn" onClick={() => this.getMovieData()}>SEARCH</button>
+                            <button className="btn btn-search" onClick={() => this.getMovieData()}>SEARCH</button>
                         </div>
                     </div>
                 </div>

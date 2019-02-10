@@ -10,7 +10,8 @@
 .movie-list {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    /* justify-content: flex-start; */
+    /* justify-content: space-between; */
     margin: 0 auto;
     align-content: space-between;
     flex-wrap: wrap;

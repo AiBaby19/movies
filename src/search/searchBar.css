@@ -41,8 +41,8 @@
 }
 
 .btn {
-    min-width: 150px;
-    width: 100%;
+    min-width: 120px;
+    /* width: 100%; */
     height: 40px;
     background-color: #90E04A;
     color: white;
@@ -50,18 +50,24 @@
     border: none;
     font-family: toma_sansregular;
 }
+
+.btn-search {
+    min-width: 150px;
+    width: 100%;
+}
+
 .btn:hover {
     background-color: rgb(183, 245, 129);
     color: black;
 }
 
-.filter {
+/* .filter {
     margin: 0 auto;
     color: white;
     font-size: 22px;
     display: flex;
     align-items: center;
-}
+} */
 @media only screen and (max-width:670px) {
     .container {
         width: 100%;
