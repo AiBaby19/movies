@@ -29,7 +29,6 @@ class App extends Component {
 
     toggleModal = (EditOrAddMovie) => {
 
-        //!!add ID
         if (EditOrAddMovie === 'addNewMovie') {
             let newMovieObj = {
                 Title: "",
@@ -42,7 +41,7 @@ class App extends Component {
             }
             this.setState({
                 movieInModal: newMovieObj,
-                addMovieID: + 1,
+                addMovieID: this.state.addMovieID+1,
                 isModalOpen: true
             });
             return
@@ -123,14 +122,19 @@ class App extends Component {
 
         const movieListCopy = [...this.state.movieList];
         const movieIndex = this.getMovieIndex(approvedTextInfo.imdbID)
-        movieListCopy.splice(movieIndex, 1, approvedTextInfo);
+    
+        if(movieIndex !== -1) {
+            movieListCopy.splice(movieIndex, 1, approvedTextInfo);
+        } else {
+            movieListCopy.push(approvedTextInfo)
+        }
+
         this.setState({
             movieList: movieListCopy,
             isModalOpen: false,
             isPopUpOpen: !this.state.isPopUpOpen,
             movieInModal: {}
         });
-
     }
 
     //get full movie info to modal
@@ -143,6 +147,7 @@ class App extends Component {
         }
 
         const movieIndex = this.getMovieIndex(movieID)
+        console.log(movieIndex)
 
         if (Object.keys(this.state.movieList[movieIndex]).length > 5) {
             this.setState({movieInModal: this.state.movieList[movieIndex], isModalOpen: true});

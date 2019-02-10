@@ -19,7 +19,7 @@ class Modal extends Component {
             .keys(this.props.movieInModal)
             .map(key => {
                 if (key === 'imdbID' || key === 'Poster') {
-                    return;
+                    return
                 } else {
                     editedText[key] = this.props.movieInModal[key];
 
@@ -61,7 +61,7 @@ class Modal extends Component {
                 .join(' ');
 
             editedText[key] = verifiedText || editedText[key];
-            console.log(editedText)
+
         };
 
         this.setState((prevState) => ({
@@ -71,6 +71,7 @@ class Modal extends Component {
     };
 
     verifyEditedInfo = () => {
+
         let cleanText = {
             ...this.state
         }
@@ -105,8 +106,7 @@ class Modal extends Component {
         let tempMovieList = this.props.movieList;
 
         for (let i = 0; i < tempMovieList.length; i++) {
-
-            if (this.state['imdbID'] !== tempMovieList[0]['imdbID'] && this.state['Title'] === tempMovieList[0]['Title']) {
+            if (this.state['imdbID'] !== tempMovieList[i]['imdbID'] && this.state['Title'] === tempMovieList[i]['Title']) {
                 this
                     .props
                     .toggleAlert('Title already exist, Choose another name.');
